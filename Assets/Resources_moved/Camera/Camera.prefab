@@ -143,3 +143,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _zoomMinBound: 50
   _zoomMaxBound: 70
+  _camera: {fileID: 6381820611574218994}
+  _inverseScroll: 1

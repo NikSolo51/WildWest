@@ -10,10 +10,11 @@ namespace CodeBase.CameraLogic
     public class TargetByDistanceActivator : MonoBehaviour,IUpdatable
     {
         private Transform _hero;
+        private Target _currentTarget;
+        private Target _prevTarget;
+        
         private ICameraRaycast _cameraRaycast;
         private IInputService _inputService;
-        private Target _prevTarget;
-        private Target _currentTarget;
         private IUpdateService _updateService;
 
         private void OnEnable()

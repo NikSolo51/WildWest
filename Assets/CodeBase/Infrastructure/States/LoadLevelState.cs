@@ -169,8 +169,28 @@ namespace CodeBase.Infrastructure.States
             CameraFollow cameraFollow = camera.GetComponent<CameraFollow>();
             cameraFollow.Construct(hero.transform, cameraRayCast,updateService );
             
+            IZoomService zoomService = PinchAndZoomSet(camera,inputService);
+            AllServices.Container.RegisterSingle<IZoomService>(zoomService);
+            
             PinchAndZoom pinchAndZoom = camera.GetComponent<PinchAndZoom>();
-            pinchAndZoom.Construct(inputService,updateService);
+            pinchAndZoom.Construct(updateService,zoomService);
+        }
+
+        IZoomService PinchAndZoomSet(GameObject cameraObj,IInputService inputService)
+        {
+            Camera camera = cameraObj.GetComponent<Camera>();
+            if (Input.touchSupported)
+            {
+                CameraZoomer cameraZoomer = new MobileZoom();
+                cameraZoomer.Construct(camera,inputService);
+                return cameraZoomer;
+            }
+            else
+            {
+                CameraZoomer cameraZoomer = new StandaloneZoom();
+                cameraZoomer.Construct(camera,inputService);
+                return cameraZoomer;
+            }
         }
 
         private void RegisterRaycastService(ICameraRaycast impl)

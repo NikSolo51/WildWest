@@ -1,5 +1,5 @@
 using CodeBase.Infrastructure.Services;
-using CodeBase.Services.Input;
+using CodeBase.Services.Camera;
 using CodeBase.Services.Update;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -12,16 +12,18 @@ namespace CodeBase.CameraLogic
         [SerializeField] private float _zoomMinBound = 0.1f;
         [SerializeField] private float _zoomMaxBound = 179.9f;
         [SerializeField] private Camera _camera;
-        private float _mouseZoomSpeed = 15.0f;
-        private float _touchZoomSpeed = 0.1f;
-        
-        private IInputService _inputService;
-        private IUpdateService _updateService;
+        [SerializeField] private bool _inverseScroll = true;
+        [SerializeField] private float _mouseZoomSpeed = 15.0f;
+        [SerializeField] private float _touchZoomSpeed = 0.1f;
+        private float _speed;
 
-        public void Construct(IInputService inputService, IUpdateService updateService)
+        private IUpdateService _updateService;
+        private IZoomService _zoomService;
+
+        public void Construct(IUpdateService updateService, IZoomService zoomService)
         {
-            _inputService = inputService;
             _updateService = updateService;
+            _zoomService = zoomService;
         }
 
         private void OnEnable()
@@ -37,36 +39,13 @@ namespace CodeBase.CameraLogic
 
         public void UpdateTick()
         {
-            if (!_camera)
+            
+            if (!_camera || _zoomService == null)
                 return;
 
-            if (Input.touchSupported)
-            {
-                
-                if (Input.touchCount == 2)
-                {
-            
-                    Touch tZero = Input.GetTouch(0);
-                    Touch tOne = Input.GetTouch(1);
-                   
-                    Vector2 tZeroPrevious = tZero.position - tZero.deltaPosition;
-                    Vector2 tOnePrevious = tOne.position - tOne.deltaPosition;
-
-                    float oldTouchDistance = Vector2.Distance(tZeroPrevious, tOnePrevious);
-                    float currentTouchDistance = Vector2.Distance(tZero.position, tOne.position);
-
-                   
-                    float deltaDistance = oldTouchDistance - currentTouchDistance;
-                    Zoom(deltaDistance, _touchZoomSpeed);
-                }
-            }
-            else
-            {
-               // float scroll = Input.GetAxis("Mouse ScrollWheel");
-                float scroll = _inputService.ScrollAxis;
-                Zoom(scroll, _mouseZoomSpeed);
-            }
-
+            _speed = Input.touchSupported ? _touchZoomSpeed : _mouseZoomSpeed;
+            _zoomService.Zoom(_speed,_inverseScroll,_zoomMinBound,_zoomMaxBound);
+          
             if (_camera.fieldOfView < _zoomMinBound)
             {
                 _camera.fieldOfView = 0.1f;
@@ -76,11 +55,6 @@ namespace CodeBase.CameraLogic
                 _camera.fieldOfView = 179.9f;
             }
         }
-
-        void Zoom(float deltaMagnitudeDiff, float speed)
-        {
-            _camera.fieldOfView += deltaMagnitudeDiff * speed;
-            _camera.fieldOfView = Mathf.Clamp(_camera.fieldOfView, _zoomMinBound, _zoomMaxBound);
-        }
     }
 }
+
