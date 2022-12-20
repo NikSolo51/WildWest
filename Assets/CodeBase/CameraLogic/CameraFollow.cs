@@ -2,16 +2,20 @@
 using CodeBase.Services.Camera;
 using CodeBase.Services.Update;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace CodeBase.CameraLogic
 {
     public class CameraFollow : MonoBehaviour, ILateUpdatable
     {
-        public Vector3 offset;
-        public float smoothSpeed = 0.125f;
+        [SerializeField] private Vector3 _offset;
+        [SerializeField] private float _smoothSpeed = 0.125f;
+        [SerializeField] private bool enableBounds;
+        [SerializeField] private float _minBoundX;
+        [SerializeField] private float _maxBoundX;
 
         private Transform _body;
-        private Vector3 desiredPosition;
+        private Vector3 _desiredPosition;
         private IUpdateService _updateService;
         private ICameraRaycast _cameraRayCast;
 
@@ -34,19 +38,42 @@ namespace CodeBase.CameraLogic
             if (_body)
             {
                 Vector3 lastHitPoint = _cameraRayCast.GetLastHitPoint();
+              
                 if (lastHitPoint.x > _body.transform.position.x)
                 {
-                    desiredPosition = _body.transform.position + offset;
+                    _desiredPosition = _body.transform.position + _offset;
                 }
                 else
                 {
-                    desiredPosition = _body.transform.position - offset;
+                    _desiredPosition = _body.transform.position - _offset;
                 }
 
-                desiredPosition.y = transform.position.y;
-                desiredPosition.z = transform.position.z;
+                _desiredPosition.y = transform.position.y;
+                _desiredPosition.z = transform.position.z;
+                
+                if (enableBounds)
+                {
+                    float newPos;
+                    if (transform.position.x >= _maxBoundX)
+                    {
+                        newPos = transform.position.x + (_desiredPosition.x * _smoothSpeed);
+                        if (newPos <= _minBoundX)
+                        {
+                            return;
+                        }
+                    }
 
-                Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
+                    if (transform.position.x <= _minBoundX)
+                    {
+                        newPos = transform.position.x - (_desiredPosition.x * _smoothSpeed);
+                        if (newPos <= _minBoundX)
+                        {
+                            return;
+                        }
+                    }
+                }
+                
+                Vector3 smoothedPosition = Vector3.Lerp(transform.position, _desiredPosition, _smoothSpeed);
                 transform.position = smoothedPosition;
             }
         }
