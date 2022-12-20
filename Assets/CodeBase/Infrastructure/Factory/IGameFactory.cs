@@ -3,6 +3,7 @@ using CodeBase.Infrastructure.Services;
 using CodeBase.Inventory;
 using CodeBase.Logic.Spawner;
 using CodeBase.Services.Audio;
+using CodeBase.Services.Update;
 using UnityEngine;
 
 namespace CodeBase.Infrastructure.Factory
@@ -11,7 +12,6 @@ namespace CodeBase.Infrastructure.Factory
     {
         Task<GameObject> CreateUIItem(ItemType typeId, Transform parent);
         Task<GameObject> CreateItem(ItemType typeId, Transform parent);
-        Task<GameObject> CreateHero(Vector3 at);
         Task<GameObject> CreateHud();
         Task CreatePuzzle(Vector3 at, string spawnerId, PuzzelName uiItemType, Transform parent,
             ISoundService levelSoundManager);
@@ -23,5 +23,6 @@ namespace CodeBase.Infrastructure.Factory
         Task<GameObject> CreateParallax();
         Task<ISoundService> CreateSoundManager(SoundManagerData soundManagerData);
         Task<GameObject> CreateUpdateManager();
+        Task<GameObject> CreateHero(Vector3 at, IUpdateService updateService);
     }
 }

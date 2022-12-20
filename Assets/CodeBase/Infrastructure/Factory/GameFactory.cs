@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using CodeBase.Hero;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Inventory;
@@ -12,6 +13,7 @@ using CodeBase.Services.Hud;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SaveLoad;
 using CodeBase.Services.StaticData;
+using CodeBase.Services.Update;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.ResourceManagement.AsyncOperations;
@@ -79,12 +81,12 @@ namespace CodeBase.Infrastructure.Factory
                 puzzleObject.GetComponentInChildren<EventsProviderForCameraRaycast>();
 
             eventsProviderForCameraRaycast.Construct(AllServices.Container.Single<ICameraRaycast>());
-            
+
             PuzzleHudActivityController puzzleHudActivityController =
                 puzzleObject.GetComponentInChildren<PuzzleHudActivityController>();
-            
-            puzzleHudActivityController.Construct(puzzleHudObject,AllServices.Container.Single<IHudService>());
-            
+
+            puzzleHudActivityController.Construct(puzzleHudObject, AllServices.Container.Single<IHudService>());
+
             Puzzle puzzle = puzzleObject.GetComponentInChildren<Puzzle>();
             puzzle.Construct(puzzleHudObject);
         }
@@ -109,11 +111,13 @@ namespace CodeBase.Infrastructure.Factory
         }
 
 
-        public async Task<GameObject> CreateHero(Vector3 at)
+        public async Task<GameObject> CreateHero(Vector3 at, IUpdateService updateService)
         {
             HeroGameObject = await InstantiateRegisteredAsync(AssetsAdress.Hero, at);
             HeroGameObject.transform.rotation = Quaternion.LookRotation(Vector3.right);
 
+            AnimateAlongAgent animateAlongAgent = HeroGameObject.GetComponent<AnimateAlongAgent>();
+            animateAlongAgent.Constructor(updateService);
             return HeroGameObject;
         }
 

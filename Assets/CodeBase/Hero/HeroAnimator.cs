@@ -5,7 +5,7 @@ namespace CodeBase.Hero
 {
     public class HeroAnimator : MonoBehaviour, IAnimationStateReader
     {
-        public Animator _animator;
+        [SerializeField]private Animator _animator;
 
         private readonly int _idleStateHash = Animator.StringToHash("Idle");
         private readonly int _walkingStateHash = Animator.StringToHash("Walking");

@@ -72,14 +72,13 @@ namespace CodeBase.Infrastructure.States
             ISoundService soundManager = await InitializeAudio(levelData.SoundManagerData);
             IInputService inputService = AllServices.Container.Single<IInputService>();
             IUpdateService updateService = AllServices.Container.Single<IUpdateService>();
-            IHudService hudService = AllServices.Container.Single<IHudService>();
             
             InitUpdateManger(updateService);
             
             GameObject camera = await InitCamera(levelData);
             ICameraRaycast cameraRaycast =  await InitCameraRaycast(camera);
 
-            GameObject hero = await InitHero(levelData,cameraRaycast,inputService);
+            GameObject hero = await InitHero(levelData,cameraRaycast,inputService,updateService);
             GameObject hud = await InitHud(hero);
 
             InitPointAndClickSystem(camera, hero,cameraRaycast,inputService);
@@ -122,9 +121,9 @@ namespace CodeBase.Infrastructure.States
         }
 
 
-        private async Task<GameObject> InitHero(LevelStaticData levelData,ICameraRaycast cameraRayCast,IInputService inputService)
+        private async Task<GameObject> InitHero(LevelStaticData levelData,ICameraRaycast cameraRayCast,IInputService inputService,IUpdateService updateService)
         {
-            GameObject hero = await _gameFactory.CreateHero(levelData.InitialHeroPosition);
+            GameObject hero = await _gameFactory.CreateHero(levelData.InitialHeroPosition,updateService);
             
             HeroMove heroMove = hero.GetComponent<HeroMove>();
             heroMove.Construct(cameraRayCast,inputService );

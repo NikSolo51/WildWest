@@ -10,12 +10,12 @@ using UnityEngine.SceneManagement;
 
 namespace CodeBase.Hero
 {
-    public class HeroMove : MonoBehaviour, ISavedProgress,IUpdatable
+    public class HeroMove : MonoBehaviour, ISavedProgress, IUpdatable
     {
-        public NavMeshAgent HeroAgent;
-        public float _minimalRunDistnace;
-        public float _walkSpeed = 3;
-        public float _runSpeed = 4;
+        [SerializeField] private NavMeshAgent HeroAgent;
+        [SerializeField] private float _minimalRunDistnace;
+        [SerializeField] private float _walkSpeed = 3;
+        [SerializeField] private float _runSpeed = 4;
         private ICameraRaycast _cameraRayCast;
         private IInputService _movementMovementInputSerivce;
         private IUpdateService _updateService;
@@ -25,7 +25,7 @@ namespace CodeBase.Hero
             _cameraRayCast = cameraRayCast;
             _movementMovementInputSerivce = inputService;
         }
-    
+
         private void OnEnable()
         {
             _updateService = AllServices.Container.Single<IUpdateService>();
@@ -36,33 +36,43 @@ namespace CodeBase.Hero
         {
             _updateService.Unregister(this);
         }
-        
+
         public void UpdateTick()
         {
             if (_movementMovementInputSerivce != null)
                 if (_movementMovementInputSerivce.IsClickButtonUp())
                 {
-                    Vector3 movementPoint = _cameraRayCast.GetPoint();
-
-                    if (movementPoint.sqrMagnitude > Constants.Epsilon)
-                    {
-                        float distnace = (movementPoint - transform.position).sqrMagnitude;
-
-                        if (distnace <= _minimalRunDistnace)
-                        {
-                            HeroAgent.speed = _walkSpeed;
-                        }
-                        else
-                        {
-                            HeroAgent.speed = _runSpeed;
-                        }
-                        
-                        HeroAgent.destination = movementPoint;
-                        Vector2 rotationDir = new Vector2(movementPoint.x, transform.position.y);
-                        HeroAgent.transform.LookAt(rotationDir);
-                    }
+                    MovingByClick();
+                }
+                else if(_movementMovementInputSerivce.IsClickButtonPress())
+                {
+                    MovingByClick();
                 }
         }
+
+        private void MovingByClick()
+        {
+            Vector3 movementPoint = _cameraRayCast.GetPoint();
+
+            if (movementPoint.sqrMagnitude > Constants.Epsilon)
+            {
+                float distnace = (movementPoint - transform.position).sqrMagnitude;
+
+                if (distnace <= _minimalRunDistnace)
+                {
+                    HeroAgent.speed = _walkSpeed;
+                }
+                else
+                {
+                    HeroAgent.speed = _runSpeed;
+                }
+            }
+            
+            HeroAgent.destination = movementPoint;
+            Vector3 rotationDir = new Vector3(movementPoint.x, transform.position.y,movementPoint.z);
+            HeroAgent.transform.LookAt(rotationDir);
+        }
+
 
         public void UpdateProgress(PlayerProgress progress)
         {

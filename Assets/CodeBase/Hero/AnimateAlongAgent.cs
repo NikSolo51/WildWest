@@ -11,13 +11,13 @@ namespace CodeBase.Hero
     {
         private const float MinimalVelocity = 0.1f;
 
-        public NavMeshAgent Agent;
-        public HeroAnimator Animator;
+        [SerializeField] private NavMeshAgent Agent;
+        [SerializeField] private HeroAnimator Animator;
         private IUpdateService _updateService;
 
-        private void OnEnable()
+        public void Constructor(IUpdateService updateService)
         {
-            _updateService = AllServices.Container.Single<IUpdateService>();
+            _updateService = updateService;
             _updateService.Register(this);
         }
 

@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 5341278879799717520}
   - component: {fileID: -3126045533677045275}
   - component: {fileID: 5478316864404206248}
-  - component: {fileID: 5209449794043640656}
   - component: {fileID: 7155203826856463507}
+  - component: {fileID: 5209449794043640656}
   - component: {fileID: 3239772557657237536}
   - component: {fileID: 3434409920502574394}
   m_Layer: 3
@@ -90,6 +90,20 @@ MonoBehaviour:
   _minimalRunDistnace: 25
   _walkSpeed: 3
   _runSpeed: 4
+--- !u!114 &7155203826856463507
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6433269669172647}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 98be6d02cd7af5d448d0a53c1d183f5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Agent: {fileID: 5341278879799717520}
+  Animator: {fileID: -3126045533677045275}
 --- !u!54 &5209449794043640656
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -106,20 +120,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &7155203826856463507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6433269669172647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 98be6d02cd7af5d448d0a53c1d183f5e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Agent: {fileID: 5341278879799717520}
-  Animator: {fileID: -3126045533677045275}
 --- !u!136 &3239772557657237536
 CapsuleCollider:
   m_ObjectHideFlags: 0
