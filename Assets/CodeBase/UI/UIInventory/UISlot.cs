@@ -3,17 +3,17 @@ using CodeBase.Infrastructure.Services;
 using CodeBase.Inventory;
 using CodeBase.Logic;
 using CodeBase.Services.Hud;
+using CodeBase.UI.UIInventory.Interfaces;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace CodeBase.UI.UIInventory
 {
     public class UISlot : MonoBehaviour, IPointerDownHandler
     {
-        [FormerlySerializedAs("uiItemType")] public ItemType itemType;
+        public ItemType _itemType;
         public Image _image;
         public Image _imageBG;
         public DoubleClick _doubleClick;
@@ -21,13 +21,13 @@ namespace CodeBase.UI.UIInventory
         public bool filled;
         [HideInInspector] public string description;
         private GameObject itemObject;
-        private IUIItemInventory _iUiItemInventory;
-        private IGameFactory _gameFactory;
-        public UnityEvent OnShowItem;
+        private UIItem _uiItem;
         private bool select;
         private Sprite _startSprite;
-        private UIItem _uiItem;
         private IHudService _hudService;
+        private IGameFactory _gameFactory;
+        private IUIItemInventory _iUiItemInventory;
+        public UnityEvent OnShowItem;
 
         private void Start()
         {
@@ -49,14 +49,17 @@ namespace CodeBase.UI.UIInventory
 
         public void OnPointerDown(PointerEventData eventData)
         {
-            if (itemType == ItemType.Nothing)
+            if (_itemType == ItemType.Nothing)
                 return;
 
             if (!select)
             {
+                if (_uiItem)
+                    if (eventData.pointerEnter.name == _uiItem.name)
+                        return;
                 _imageBG.color = Color.green;
-                _iUiItemInventory.Select(itemType);
-                _doubleClick.Check();
+                _iUiItemInventory.Select(_itemType);
+                _doubleClick.StartDetect();
                 select = true;
             }
             else
@@ -68,24 +71,24 @@ namespace CodeBase.UI.UIInventory
         private void Deselect()
         {
             _imageBG.color = Color.white;
-            _iUiItemInventory.Deselect(itemType);
-            _doubleClick.Check();
+            _iUiItemInventory.Deselect(_itemType);
+            _doubleClick.StartDetect();
             select = false;
         }
 
         private async void ShowItem()
         {
-            if (itemType == ItemType.Nothing)
+            if (_itemType == ItemType.Nothing)
                 return;
 
             if (!itemObject)
             {
-                itemObject = await _gameFactory?.CreateUIItem(itemType, this.transform);
+                itemObject = await _gameFactory?.CreateUIItem(_itemType, this.transform);
             }
 
             if (itemObject)
             {
-                if(_hudService.GetState() != HudState.Empty)
+                if (_hudService.GetState() != HudState.Empty)
                     return;
                 _uiItem = itemObject.GetComponent<UIItem>();
                 _uiItem.OnCloseObject += Deselect;
@@ -100,8 +103,11 @@ namespace CodeBase.UI.UIInventory
         public void Clear()
         {
             if (_uiItem)
+            {
                 _uiItem.OnCloseObject -= Deselect;
-            itemType = ItemType.Nothing;
+            }
+
+            _itemType = ItemType.Nothing;
             _image.sprite = _startSprite;
             _imageBG.color = Color.white;
             description = "";

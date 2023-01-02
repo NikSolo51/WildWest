@@ -2,7 +2,7 @@
 using System.Linq;
 using CodeBase.Inventory;
 using CodeBase.Logic.Spawner;
-using CodeBase.Services.Audio;
+using CodeBase.Services.Audio.SoundManager;
 using UnityEngine;
 
 namespace CodeBase.Services.StaticData

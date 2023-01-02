@@ -12,7 +12,7 @@ namespace CodeBase.Logic
         private int clickNum = 0;
         public event Action OnDoubleClick;
 
-        public void Check()
+        public void StartDetect()
         {
             clickNum += 1;
 

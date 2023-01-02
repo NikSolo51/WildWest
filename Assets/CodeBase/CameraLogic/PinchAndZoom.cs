@@ -2,7 +2,6 @@ using CodeBase.Infrastructure.Services;
 using CodeBase.Services.Camera;
 using CodeBase.Services.Update;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace CodeBase.CameraLogic
 {

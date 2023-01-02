@@ -5,17 +5,18 @@ using CodeBase.Services.Input;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
 
 namespace CodeBase.UI.UIInventory
 {
     public class UIItem : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
-        private bool inObject;
+        private bool _inObject;
         private IInputService _inputService;
-        [FormerlySerializedAs("CloseObject")] public UnityEvent closeObjectUnityEvent;
-        public event Action OnCloseObject;
         private IHudService _hudService;
+        
+        [SerializeField] private UnityEvent OnCloseObjectUnityEvent;
+        public event Action OnCloseObject;
+
         private void Start()
         {
             _inputService = AllServices.Container.Single<IInputService>();
@@ -24,23 +25,23 @@ namespace CodeBase.UI.UIInventory
 
         private void Update()
         {
-            if (_inputService.IsClickButtonUp() && !inObject)
+            if (_inputService.IsClickButtonUp() && !_inObject)
             {
                 gameObject.SetActive(false);
                 _hudService.ChangeState(HudState.Empty);
-                closeObjectUnityEvent?.Invoke();
+                OnCloseObjectUnityEvent?.Invoke();
                 OnCloseObject?.Invoke();
             }
         }
 
         public void OnPointerEnter(PointerEventData eventData)
         {
-            inObject = true;
+            _inObject = true;
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
-            inObject = false;
+            _inObject = false;
         }
     }
 }

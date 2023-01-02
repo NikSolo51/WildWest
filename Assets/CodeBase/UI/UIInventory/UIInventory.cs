@@ -1,13 +1,15 @@
 ﻿using System.Collections.Generic;
+using CodeBase.Data;
 using CodeBase.Inventory;
 using CodeBase.Services.StaticData;
+using CodeBase.UI.UIInventory.Interfaces;
 
 namespace CodeBase.UI.UIInventory
 {
     public class UIInventory : IUIItemInventory
     {
-        public List<UISlot> inventory = new List<UISlot>();
-        private int currentSlotIndex;
+        private List<UISlot> _inventory = new List<UISlot>();
+        private int _currentSlotIndex;
         private IStaticDataService _staticDataService;
         private IItemCombiner _itemCombiner;
         
@@ -19,12 +21,15 @@ namespace CodeBase.UI.UIInventory
 
         public void RegisterNewSlot(UISlot slot)
         {
-            inventory.Add(slot);
+            _inventory.Add(slot);
         }
 
         public void RegisterNewItem(ItemType itemType)
         {
-            if (currentSlotIndex + 1 >= inventory.Count)
+            if(itemType == ItemType.Nothing)
+                return;
+            
+            if (_currentSlotIndex + 1 >= _inventory.Count)
                 return;
 
             int newIndex = GetNotFilledSlot();
@@ -34,19 +39,19 @@ namespace CodeBase.UI.UIInventory
 
             ItemStaticData itemData = _staticDataService.ForItem(itemType);
   
-            currentSlotIndex = newIndex;
+            _currentSlotIndex = newIndex;
             
-            inventory[currentSlotIndex].itemType = itemType;
-            inventory[currentSlotIndex]._image.sprite = itemData.Sprite;
-            inventory[currentSlotIndex].description = itemData.Description;
-            inventory[currentSlotIndex].filled = true;
+            _inventory[_currentSlotIndex]._itemType = itemType;
+            _inventory[_currentSlotIndex]._image.sprite = itemData.Sprite;
+            _inventory[_currentSlotIndex].description = itemData.Description;
+            _inventory[_currentSlotIndex].filled = true;
         }
 
         private int GetNotFilledSlot()
         {
-            for (int i = 0; i < inventory.Count; i++)
+            for (int i = 0; i < _inventory.Count; i++)
             {
-                if (!inventory[i].filled)
+                if (!_inventory[i].filled)
                 {
                     return i;
                 }
@@ -80,10 +85,10 @@ namespace CodeBase.UI.UIInventory
 
         private UISlot GetSlotByType(ItemType type)
         {
-            for (int i = 0; i < inventory.Count; i++)
+            for (int i = 0; i < _inventory.Count; i++)
             {
-                if (inventory[i].itemType == type)
-                    return inventory[i];
+                if (_inventory[i]._itemType == type)
+                    return _inventory[i];
             }
 
             return null;
@@ -92,14 +97,14 @@ namespace CodeBase.UI.UIInventory
         private void ClearUsedItems()
         {
             List<ItemType> used = _itemCombiner.GetUsedItem();
-            for (int i = 0; i < inventory.Count; i++)
+            for (int i = 0; i < _inventory.Count; i++)
             {
                 for (int j = 0; j < used.Count; j++)
                 {
-                    if (inventory[i].itemType == used[j])
+                    if (_inventory[i]._itemType == used[j])
                     {
-                        inventory[i].Clear();
-                        currentSlotIndex--;
+                        _inventory[i].Clear();
+                        _currentSlotIndex--;
                     }
                 }
             }
@@ -114,8 +119,26 @@ namespace CodeBase.UI.UIInventory
 
         public void Clear()
         {
-            currentSlotIndex = 0;
-            inventory.Clear();
+            _currentSlotIndex = 0;
+            _inventory.Clear();
+        }
+
+
+        public void LoadProgress(PlayerProgress progress)
+        {
+            for (int i = 0; i < progress.InventoryData.ItemTypes.Count; i++)
+            {
+                RegisterNewItem(progress.InventoryData.ItemTypes[i]);
+            }
+        }
+
+        public void UpdateProgress(PlayerProgress progress)
+        {
+            progress.InventoryData.ItemTypes.Clear();
+            for (int i = 0; i < _inventory.Count; i++)
+            {
+                progress.InventoryData.ItemTypes.Add(_inventory[i]._itemType);
+            }
         }
     }
 }

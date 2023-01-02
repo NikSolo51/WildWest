@@ -1,6 +1,6 @@
-﻿using System;
+﻿﻿using System;
 
-namespace CodeBase.Logic.CloseHud
+ namespace CodeBase.Logic.CloseHud
 {
     public interface ICloseHud
     {

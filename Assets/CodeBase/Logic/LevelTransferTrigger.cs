@@ -13,7 +13,6 @@ namespace CodeBase.Logic
 
         private void Awake()
         {
-            // delete with factory help
             _stateMachine = AllServices.Container.Single<IGameStateMachine>();
         }
 

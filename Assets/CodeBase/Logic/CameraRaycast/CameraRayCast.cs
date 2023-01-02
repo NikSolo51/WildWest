@@ -2,19 +2,19 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace CodeBase.Logic.Camera
+namespace CodeBase.Logic.CameraRaycast
 {
     public class CameraRayCast : MonoBehaviour, ICameraRaycast
     {
         public LayerMask _layermask;
-        private UnityEngine.Camera _camera;
-        private Vector3 lastHitPointPos;
-        private bool enableRaycast = true;
-
+        private Camera _camera;
+        private Vector3 _lastHitPointPos;
+        private bool _enableRaycast = true;
+        private Transform _heroTransform;
 
         public Vector3 GetLastHitPoint()
         {
-            return lastHitPointPos;
+            return _lastHitPointPos;
         }
 
         public Collider GetCollider()
@@ -31,37 +31,38 @@ namespace CodeBase.Logic.Camera
         
         public Vector3 GetPoint()
         {
-            if (!enableRaycast)
-                return lastHitPointPos;
+            if (!_enableRaycast)
+                return _heroTransform.position;
             
             if (EventSystem.current.IsPointerOverGameObject()) 
-                return lastHitPointPos;
+                return _heroTransform.position;
             if (EventSystem.current.currentSelectedGameObject != null)
-                return lastHitPointPos;
+                return _heroTransform.position;
             
             RaycastHit hit;
             Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, _layermask))
             {
-                lastHitPointPos = hit.point;
+                _lastHitPointPos = hit.point;
             }
 
-            return lastHitPointPos;
+            return _lastHitPointPos;
         }
 
-        public void Construct(UnityEngine.Camera camera)
+        public void Construct(Camera camera,Transform heroTransform)
         {
             _camera = camera;
+            _heroTransform = heroTransform;
         }
 
         public void EnableRayCast()
         {
-            enableRaycast = true;
+            _enableRaycast = true;
         }
 
         public void DisableRayCast()
         {
-            enableRaycast = false;
+            _enableRaycast = false;
         }
     }
 }

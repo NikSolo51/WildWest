@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace CodeBase.CameraLogic
+﻿namespace CodeBase.Services.Zoom
 {
     public class StandaloneZoom : CameraZoomer
     {

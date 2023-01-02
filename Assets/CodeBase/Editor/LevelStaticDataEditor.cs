@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using CodeBase.Logic;
 using CodeBase.Logic.Spawner;
-using CodeBase.Services.Audio;
+using CodeBase.Services.Audio.SoundManager;
 using CodeBase.Services.StaticData;
 using UnityEditor;
 using UnityEngine;

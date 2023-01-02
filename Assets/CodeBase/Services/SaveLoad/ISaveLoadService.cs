@@ -7,5 +7,9 @@ namespace CodeBase.Services.SaveLoad
     {
         void SaveProgress();
         PlayerProgress LoadProgress();
+
+        void Register(ISavedProgressReader progressReader);
+        void InformProgressReaders();
+        void CleanUp();
     }
 }

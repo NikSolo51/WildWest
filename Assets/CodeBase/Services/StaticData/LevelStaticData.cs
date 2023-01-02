@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using CodeBase.Services.Audio;
+using CodeBase.Services.Audio.SoundManager;
 using UnityEngine;
 
 namespace CodeBase.Services.StaticData

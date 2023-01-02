@@ -3,6 +3,7 @@ using CodeBase.Infrastructure.Services;
 using CodeBase.Inventory;
 using CodeBase.Logic.Spawner;
 using CodeBase.Services.Audio;
+using CodeBase.Services.Audio.SoundManager;
 using CodeBase.Services.Update;
 using UnityEngine;
 
@@ -15,7 +16,6 @@ namespace CodeBase.Infrastructure.Factory
         Task<GameObject> CreateHud();
         Task CreatePuzzle(Vector3 at, string spawnerId, PuzzelName uiItemType, Transform parent,
             ISoundService levelSoundManager);
-        void InformProgressReaders();
         void CleanUp();
 
         Task WarmUp();

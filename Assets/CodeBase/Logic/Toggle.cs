@@ -20,13 +20,11 @@ namespace CodeBase.Logic
             {
                 AllServices.Container.Single<ICameraRaycast>().DisableRayCast();
                 ToggleOn?.Invoke();
-                buttonImage.color = Color.white;
             }
             else
             {
                 AllServices.Container.Single<ICameraRaycast>().EnableRayCast();
                 ToggleOff?.Invoke();
-                buttonImage.color = Color.green;
             }
         }
     }

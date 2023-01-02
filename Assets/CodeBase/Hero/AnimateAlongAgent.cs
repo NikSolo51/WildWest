@@ -1,5 +1,4 @@
-﻿using CodeBase.Infrastructure.Services;
-using CodeBase.Services.Update;
+﻿using CodeBase.Services.Update;
 using UnityEngine;
 using UnityEngine.AI;
 

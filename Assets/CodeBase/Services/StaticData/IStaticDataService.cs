@@ -2,7 +2,7 @@
 using CodeBase.Infrastructure.Services;
 using CodeBase.Inventory;
 using CodeBase.Logic.Spawner;
-using CodeBase.Services.Audio;
+using CodeBase.Services.Audio.SoundManager;
 
 namespace CodeBase.Services.StaticData
 {

@@ -6,18 +6,18 @@ namespace CodeBase.Logic.Parallax
 {
     public class Parallax : MonoBehaviour,IUpdatable
     {
-        [SerializeField] private Transform followingTarget;
-        [SerializeField, Range(0, 1f)] private float parallaxStrength = 0.1f;
-        [SerializeField] private bool disableVerticalParallax;
-        private Vector3 targetPreviousPosition;
+        [SerializeField] private Transform _followingTarget;
+        [SerializeField, Range(0, 1f)] private float _parallaxStrength = 0.1f;
+        [SerializeField] private bool _disableVerticalParallax;
+        private Vector3 _targetPreviousPosition;
         private IUpdateService _updateService;
 
-        public void Initialize(GameObject camera)
+        public void Construct(GameObject camera)
         {
-            if (!followingTarget)
-                followingTarget = camera.transform;
+            if (!_followingTarget)
+                _followingTarget = camera.transform;
 
-            targetPreviousPosition = followingTarget.position;
+            _targetPreviousPosition = _followingTarget.position;
         }
         
         private void OnEnable()
@@ -33,17 +33,17 @@ namespace CodeBase.Logic.Parallax
 
         public void UpdateTick()
         {
-            if (followingTarget)
+            if (_followingTarget)
             {
-                Vector3 delta = followingTarget.position - targetPreviousPosition;
-                if (disableVerticalParallax)
+                Vector3 delta = _followingTarget.position - _targetPreviousPosition;
+                if (_disableVerticalParallax)
                 {
                     delta.y = 0;
                 }
 
-                targetPreviousPosition = followingTarget.position;
+                _targetPreviousPosition = _followingTarget.position;
 
-                transform.position += delta * parallaxStrength;
+                transform.position += delta * _parallaxStrength;
             }
         }
     }

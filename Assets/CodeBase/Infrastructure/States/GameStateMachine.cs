@@ -6,16 +6,10 @@ using CodeBase.Logic;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SaveLoad;
 using CodeBase.Services.StaticData;
-using CodeBase.UI.UIInventory;
+using CodeBase.UI.UIInventory.Interfaces;
 
 namespace CodeBase.Infrastructure.States
 {
-    public interface IGameStateMachine : IService
-    {
-        void Enter<TState>() where TState : class, IState;
-        void Enter<TState, TPayload>(TPayload payload) where TState : class, IPayLoadedState<TPayload>;
-    }
-
     public class GameStateMachine : IGameStateMachine
     {
         private Dictionary<Type, IExitableState> _states;
@@ -29,7 +23,8 @@ namespace CodeBase.Infrastructure.States
                 [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, curtain,
                     services.Single<IGameFactory>(),
                     services.Single<IStaticDataService>(),
-                    services.Single<IUIItemInventory>()),
+                    services.Single<IUIItemInventory>(),
+                    AllServices.Container.Single<ISaveLoadService>()),
                 [typeof(LoadProgressState)] = new LoadProgressState(this, services.Single<IPersistentProgressService>(),
                     services.Single<ISaveLoadService>()),
                 [typeof(GameLoopState)] = new GameLoopState(this),

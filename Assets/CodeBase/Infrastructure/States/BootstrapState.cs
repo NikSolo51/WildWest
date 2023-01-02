@@ -9,7 +9,7 @@ using CodeBase.Services.SaveLoad;
 using CodeBase.Services.StaticData;
 using CodeBase.Services.Update;
 using CodeBase.UI.UIInventory;
-using UnityEngine;
+using CodeBase.UI.UIInventory.Interfaces;
 
 namespace CodeBase.Infrastructure.States
 {
@@ -43,25 +43,41 @@ namespace CodeBase.Infrastructure.States
         {
             _services.RegisterSingle<IInputService>(SetupMovementInputService());
             _services.RegisterSingle<IGameStateMachine>(_stateMachine);
+            
             RegisterAssetProvider();
             RegisterStaticData();
+            
             _services.RegisterSingle<IRandomService>(new RandomService());
             _services.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
+            
             SaveLoadService saveLoadService = new SaveLoadService(_services.Single<IPersistentProgressService>());
             _services.RegisterSingle<ISaveLoadService>(saveLoadService);
     
-            ItemCombiner itemCombiner = new ItemCombiner();
-            itemCombiner.Constructor(_services.Single<IStaticDataService>());
-            UIInventory inventory = new UIInventory();
-            
+            ItemCombiner itemCombiner = RegisterItemCombiner();
+            RegisterInventory(itemCombiner);
+
             AllServices.Container.RegisterSingle<IUpdateService>(new UpdateManager());
-            inventory.Construct(_services.Single<IStaticDataService>(), itemCombiner);
+
             _services.RegisterSingle<IHudService>(new HudStateService());
-            _services.RegisterSingle<IItemCombiner>(itemCombiner);
-            _services.RegisterSingle<IUIItemInventory>(inventory);
+          
             _services.RegisterSingle<IGameFactory>(new GameFactory(_services.Single<IAssets>(),
                 _services.Single<IStaticDataService>(), _services.Single<IPersistentProgressService>(),
                 saveLoadService));
+        }
+
+        private ItemCombiner RegisterItemCombiner()
+        {
+            ItemCombiner itemCombiner = new ItemCombiner();
+            itemCombiner.Constructor(_services.Single<IStaticDataService>());
+            _services.RegisterSingle<IItemCombiner>(itemCombiner);
+            return itemCombiner;
+        }
+
+        private void RegisterInventory(ItemCombiner itemCombiner)
+        {
+            UIInventory inventory = new UIInventory();
+            inventory.Construct(_services.Single<IStaticDataService>(), itemCombiner);
+            _services.RegisterSingle<IUIItemInventory>(inventory);
         }
 
         private void RegisterAssetProvider()
@@ -84,14 +100,7 @@ namespace CodeBase.Infrastructure.States
 
         private static IInputService SetupMovementInputService()
         {
-            if (Application.isEditor)
-            {
                 return new StandaloneInputService();
-            }
-            else
-            {
-                return new JoystickMovementInputService();
-            }
         }
     }
 }

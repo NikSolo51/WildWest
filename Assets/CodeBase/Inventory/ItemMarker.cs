@@ -1,5 +1,5 @@
 ﻿using CodeBase.Infrastructure.Services;
-using CodeBase.UI.UIInventory;
+using CodeBase.UI.UIInventory.Interfaces;
 using UnityEngine;
 using UnityEngine.Serialization;
 

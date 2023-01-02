@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using CodeBase.Services.Audio;
+using CodeBase.Services.Audio.SoundManager;
 using CodeBase.Services.StaticData;
 using UnityEditor;
 using UnityEngine;
@@ -42,7 +42,6 @@ namespace CodeBase.Editor
 
         private void LoadLevels()
         {
-            Debug.Log("fdsd");
             _levels = Resources.LoadAll<LevelStaticData>("StaticData/Levels").ToDictionary(x => x.LevelKey, x => x);
         }
 

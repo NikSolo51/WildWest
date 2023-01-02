@@ -4,16 +4,17 @@ using CodeBase.Hero;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Logic;
-using CodeBase.Logic.Camera;
+using CodeBase.Logic.CameraRaycast;
 using CodeBase.Logic.Parallax;
 using CodeBase.Services.Audio;
+using CodeBase.Services.Audio.SoundManager;
 using CodeBase.Services.Camera;
-using CodeBase.Services.Hud;
 using CodeBase.Services.Input;
+using CodeBase.Services.SaveLoad;
 using CodeBase.Services.StaticData;
 using CodeBase.Services.Update;
-using CodeBase.UI;
-using CodeBase.UI.UIInventory;
+using CodeBase.Services.Zoom;
+using CodeBase.UI.UIInventory.Interfaces;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -27,13 +28,14 @@ namespace CodeBase.Infrastructure.States
         private readonly IGameFactory _gameFactory;
         private IStaticDataService _staticData;
         private IUIItemInventory _uiItemInventory;
-
+        public ISaveLoadService _saveLoadService;
         public LoadLevelState(GameStateMachine stateMachine,
             SceneLoader sceneLoader,
             LoadingCurtain curtain,
             IGameFactory gameFactory,
             IStaticDataService staticData,
-            IUIItemInventory uiItemInventory)
+            IUIItemInventory uiItemInventory,
+            ISaveLoadService saveLoadService)
         {
             _stateMachine = stateMachine;
             _sceneLoader = sceneLoader;
@@ -41,6 +43,7 @@ namespace CodeBase.Infrastructure.States
             _gameFactory = gameFactory;
             _staticData = staticData;
             _uiItemInventory = uiItemInventory;
+            _saveLoadService = saveLoadService;
         }
 
         public void Enter(string sceneName)
@@ -60,7 +63,7 @@ namespace CodeBase.Infrastructure.States
         private async void OnLoaded()
         {
             await InitGameWorld();
-            _gameFactory.InformProgressReaders();
+            _saveLoadService.InformProgressReaders();
             _stateMachine.Enter<GameLoopState>();
         }
 
@@ -72,15 +75,22 @@ namespace CodeBase.Infrastructure.States
             ISoundService soundManager = await InitializeAudio(levelData.SoundManagerData);
             IInputService inputService = AllServices.Container.Single<IInputService>();
             IUpdateService updateService = AllServices.Container.Single<IUpdateService>();
+            ISaveLoadService saveLoadService = AllServices.Container.Single<ISaveLoadService>();
             
             InitUpdateManger(updateService);
-            
+
+            GameObject hero = await CreateHero(levelData,updateService);
+
             GameObject camera = await InitCamera(levelData);
-            ICameraRaycast cameraRaycast =  await InitCameraRaycast(camera);
-
-            GameObject hero = await InitHero(levelData,cameraRaycast,inputService,updateService);
+            ICameraRaycast cameraRaycast =  await InitCameraRaycast(camera,hero.transform);
+            CameraShake cameraShake = camera.GetComponent<CameraShake>();
+            cameraShake.Construct(updateService);
+            
+            await InitHero(hero,cameraRaycast,inputService,saveLoadService);
             GameObject hud = await InitHud(hero);
-
+            
+            RegisterInventory();
+            
             InitPointAndClickSystem(camera, hero,cameraRaycast,inputService);
             await InitPuzzles(levelData, hud,soundManager);
             
@@ -88,6 +98,11 @@ namespace CodeBase.Infrastructure.States
             
             GameObject parallax = await _gameFactory.CreateParallax();
             InitParallax(parallax,camera);
+        }
+
+        private void RegisterInventory()
+        {
+            _saveLoadService.Register(_uiItemInventory);
         }
 
         private async void InitUpdateManger(IUpdateService updateService)
@@ -106,27 +121,30 @@ namespace CodeBase.Infrastructure.States
 
         private void InitPointAndClickSystem(GameObject camera, GameObject hero,ICameraRaycast cameraRaycast,IInputService inputService)
         {
-            TargetByDistanceActivator targetByDistanceActivator = camera.GetComponent<TargetByDistanceActivator>();
+           TargetByDistanceActivator targetByDistanceActivator = camera.GetComponent<TargetByDistanceActivator>();
             targetByDistanceActivator.Construct(hero.transform, cameraRaycast,
                 inputService);
         }
 
-        private async Task<ICameraRaycast> InitCameraRaycast(GameObject camera)
+        private async Task<ICameraRaycast> InitCameraRaycast(GameObject camera,Transform heroTransform)
         {
             CameraRayCast cameraRayCast = camera.GetComponent<CameraRayCast>();
-            cameraRayCast.Construct(camera.GetComponent<Camera>());
+            cameraRayCast.Construct(camera.GetComponent<Camera>(),heroTransform);
             RegisterRaycastService(cameraRayCast);
 
             return cameraRayCast;
         }
 
 
-        private async Task<GameObject> InitHero(LevelStaticData levelData,ICameraRaycast cameraRayCast,IInputService inputService,IUpdateService updateService)
+        private async Task InitHero(GameObject hero,ICameraRaycast cameraRayCast,IInputService inputService, ISaveLoadService saveLoadService)
+        {
+            HeroMove heroMove = hero.GetComponent<HeroMove>();
+            heroMove.Construct(cameraRayCast,inputService,saveLoadService);
+        }
+
+        private async Task<GameObject> CreateHero(LevelStaticData levelData,IUpdateService updateService)
         {
             GameObject hero = await _gameFactory.CreateHero(levelData.InitialHeroPosition,updateService);
-            
-            HeroMove heroMove = hero.GetComponent<HeroMove>();
-            heroMove.Construct(cameraRayCast,inputService );
             return hero;
         }
 
@@ -153,7 +171,7 @@ namespace CodeBase.Infrastructure.States
             Parallax[] parallaxes = parallax.GetComponentsInChildren<Parallax>();
             for (int i = 0; i < parallaxes.Length; i++)
             {
-                parallaxes[i].Initialize(camera);
+                parallaxes[i].Construct(camera);
             }
         }
 

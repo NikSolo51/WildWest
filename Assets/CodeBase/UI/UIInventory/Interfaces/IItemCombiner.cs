@@ -3,7 +3,7 @@ using CodeBase.Infrastructure.Services;
 using CodeBase.Inventory;
 using CodeBase.Services.StaticData;
 
-namespace CodeBase.UI.UIInventory
+namespace CodeBase.UI.UIInventory.Interfaces
 {
     public interface IItemCombiner : IService
     {

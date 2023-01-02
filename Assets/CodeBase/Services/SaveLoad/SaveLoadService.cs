@@ -31,5 +31,31 @@ namespace CodeBase.Services.SaveLoad
         {
             return PlayerPrefs.GetString(ProgressKey)?.ToDeserialized<PlayerProgress>();
         }
+
+        public void Register(ISavedProgressReader progressReader)
+        {
+            if (progressReader is ISavedProgress progressWriter)
+            {
+                if (!ProgressWriters.Contains(progressWriter))
+                    ProgressWriters.Add(progressWriter);
+            }
+
+            if (!ProgressReaders.Contains(progressReader))
+                ProgressReaders.Add(progressReader);
+        }
+
+        public void InformProgressReaders()
+        {
+            foreach (ISavedProgressReader progressReader in ProgressReaders)
+            {
+                progressReader.LoadProgress(_progressService.Progress);
+            }
+        }
+
+        public void CleanUp()
+        {
+            ProgressReaders.Clear();
+            ProgressWriters.Clear();
+        }
     }
 }

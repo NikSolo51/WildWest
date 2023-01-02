@@ -1,7 +1,7 @@
 ﻿using CodeBase.Services.Camera;
 using UnityEngine;
 
-namespace CodeBase.Logic.Camera
+namespace CodeBase.Logic.CameraRaycast
 {
     public class EventsProviderForCameraRaycast : MonoBehaviour
     {

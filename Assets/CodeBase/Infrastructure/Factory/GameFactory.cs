@@ -3,11 +3,12 @@ using CodeBase.Hero;
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Services;
 using CodeBase.Inventory;
-using CodeBase.Logic.Camera;
+using CodeBase.Logic.CameraRaycast;
 using CodeBase.Logic.PuzzleHud;
 using CodeBase.Logic.Spawner;
 using CodeBase.Puzzles;
 using CodeBase.Services.Audio;
+using CodeBase.Services.Audio.SoundManager;
 using CodeBase.Services.Camera;
 using CodeBase.Services.Hud;
 using CodeBase.Services.PersistentProgress;
@@ -25,7 +26,7 @@ namespace CodeBase.Infrastructure.Factory
         private readonly IAssets _asset;
         private readonly IStaticDataService _staticData;
         private IPersistentProgressService _progressService;
-        private readonly SaveLoadService _saveLoadService;
+        private readonly ISaveLoadService _saveLoadService;
 
         private GameObject HeroGameObject { get; set; }
 
@@ -165,9 +166,9 @@ namespace CodeBase.Infrastructure.Factory
                     GameObject prefab = await _asset.Load<GameObject>(itemData.UIPerefab);
 
 
-                    GameObject item = Object.Instantiate(prefab, parent.position, Quaternion.identity,
-                        parent.transform);
-
+                    GameObject item = Object.Instantiate(prefab, prefab.transform.position, Quaternion.identity,
+                        parent.parent.parent);
+                    
                     return item;
                 }
             }
@@ -220,33 +221,13 @@ namespace CodeBase.Infrastructure.Factory
         {
             foreach (ISavedProgressReader progressReader in gameObject.GetComponentsInChildren<ISavedProgressReader>())
             {
-                Register(progressReader);
-            }
-        }
-
-        private void Register(ISavedProgressReader progressReader)
-        {
-            if (progressReader is ISavedProgress progressWriter)
-            {
-                _saveLoadService.ProgressWriters.Add(progressWriter);
-            }
-
-            _saveLoadService.ProgressReaders.Add(progressReader);
-        }
-
-        public void InformProgressReaders()
-        {
-            foreach (ISavedProgressReader progressReader in _saveLoadService.ProgressReaders)
-            {
-                progressReader.LoadProgress(_progressService.Progress);
+                _saveLoadService.Register(progressReader);
             }
         }
 
         public void CleanUp()
         {
-            _saveLoadService.ProgressReaders.Clear();
-            _saveLoadService.ProgressWriters.Clear();
-
+            _saveLoadService.CleanUp();
             _asset.CleanUp();
         }
     }

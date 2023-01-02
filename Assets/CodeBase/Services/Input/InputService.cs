@@ -13,7 +13,6 @@ namespace CodeBase.Services.Input
         public abstract Vector2 ViewAxis { get; }
         public abstract float ScrollAxis { get; }
 
-        //TODO
         public bool IsClickButtonUp()
         {
             return UnityEngine.Input.GetMouseButtonDown(0);

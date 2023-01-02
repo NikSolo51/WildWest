@@ -1,6 +1,4 @@
-﻿using CodeBase.Infrastructure.Services;
-
-namespace CodeBase.Services.Hud
+﻿namespace CodeBase.Services.Hud
 {
     public class HudStateService : IHudService
     {
@@ -16,20 +14,5 @@ namespace CodeBase.Services.Hud
         {
             return _hudState;
         }
-    }
-
-    public interface IHudService : IService
-    {
-        void ChangeState(HudState hudState);
-
-        HudState GetState();
-    }
-    
-
-    public enum HudState
-    {
-        Empty,
-        InventoryOpen,
-        PuzzleHudOpen
     }
 }

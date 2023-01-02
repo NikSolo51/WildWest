@@ -19,11 +19,13 @@ namespace CodeBase.Hero
         private ICameraRaycast _cameraRayCast;
         private IInputService _movementMovementInputSerivce;
         private IUpdateService _updateService;
+        private ISaveLoadService _saveLoadService;
 
-        public void Construct(ICameraRaycast cameraRayCast, IInputService inputService)
+        public void Construct(ICameraRaycast cameraRayCast, IInputService inputService,ISaveLoadService saveLoadService)
         {
             _cameraRayCast = cameraRayCast;
             _movementMovementInputSerivce = inputService;
+            _saveLoadService = saveLoadService;
         }
 
         private void OnEnable()
@@ -35,19 +37,14 @@ namespace CodeBase.Hero
         private void OnDisable()
         {
             _updateService.Unregister(this);
+            _saveLoadService.SaveProgress();
         }
 
         public void UpdateTick()
         {
             if (_movementMovementInputSerivce != null)
-                if (_movementMovementInputSerivce.IsClickButtonUp())
-                {
+                if (_movementMovementInputSerivce.IsClickButtonUp() || _movementMovementInputSerivce.IsClickButtonPress())
                     MovingByClick();
-                }
-                else if(_movementMovementInputSerivce.IsClickButtonPress())
-                {
-                    MovingByClick();
-                }
         }
 
         private void MovingByClick()
@@ -76,7 +73,6 @@ namespace CodeBase.Hero
 
         public void UpdateProgress(PlayerProgress progress)
         {
-            //use box collider if you use character controller or your y position will be incorrect
             progress.WorldData.PositionOnLevel = new PositionOnLevel(CurrentLevel(),
                 transform.position.AsVectorData());
         }

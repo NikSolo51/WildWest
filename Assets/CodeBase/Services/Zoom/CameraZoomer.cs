@@ -2,14 +2,14 @@
 using CodeBase.Services.Input;
 using UnityEngine;
 
-namespace CodeBase.CameraLogic
+namespace CodeBase.Services.Zoom
 {
     public abstract class CameraZoomer : IZoomService
     {
-        protected Camera _camera;
+        protected UnityEngine.Camera _camera;
         protected IInputService _inputService;
 
-        public void Construct(Camera camera, IInputService inputService)
+        public void Construct(UnityEngine.Camera camera, IInputService inputService)
         {
             _camera = camera;
             _inputService = inputService;

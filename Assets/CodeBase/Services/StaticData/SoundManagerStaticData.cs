@@ -1,4 +1,4 @@
-﻿using CodeBase.Services.Audio;
+﻿using CodeBase.Services.Audio.SoundManager;
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 
