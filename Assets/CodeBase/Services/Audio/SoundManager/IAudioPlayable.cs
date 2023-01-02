@@ -1,4 +1,4 @@
-﻿namespace CodeBase.Services.Audio
+﻿namespace CodeBase.Services.Audio.SoundManager
 {
     public interface IAudioPlayable
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace CodeBase.Services.Audio
+namespace CodeBase.Services.Audio.SoundManager
 {
     [Serializable]
     public class SoundManagerData

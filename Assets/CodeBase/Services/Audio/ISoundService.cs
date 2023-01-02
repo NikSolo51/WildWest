@@ -13,6 +13,8 @@ namespace CodeBase.Services.Audio
         void MuteSound (string soundName);
         void PauseSound(string soundName);
         void UnmuteSound (string soundName);
-        float GetSoundLenght(string soundName);
+        float GetSoundLength(string soundName);
+        void SetVolumeConcreteSound(string soundName, float volume);
+        float GetSoundVolume(string soundName);
     }
 }

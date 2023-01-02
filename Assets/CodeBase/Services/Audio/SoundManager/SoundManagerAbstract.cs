@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace CodeBase.Services.Audio
+namespace CodeBase.Services.Audio.SoundManager
 {
     public abstract class SoundManagerAbstract : MonoBehaviour,ISoundService
     {
@@ -10,10 +10,14 @@ namespace CodeBase.Services.Audio
         public abstract void StopSound(string soundName);
         public abstract void StopAllSounds();
         public abstract void SetVolume(float volume);
+        public abstract void SetVolumeConcreteSound(string soundName, float volume);
         public abstract void SetPitch(float pitch);
         public abstract void MuteSound(string soundName);
         public abstract void PauseSound(string soundName);
         public abstract void UnmuteSound(string soundName);
-        public abstract float GetSoundLenght(string soundName);
+        public abstract float GetSoundLength(string soundName);
+        public abstract float GetSoundVolume(string soundName);
+
+
     }
 }

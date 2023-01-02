@@ -1,8 +1,8 @@
 ﻿using UnityEngine;
 
-namespace CodeBase.Services.Audio
+namespace CodeBase.Services.Audio.SoundManager
 {
-    public class SoundManagerProvider : MonoBehaviour,ISoundService
+    public class SoundManagerProvider : MonoBehaviour, ISoundService
     {
         private ISoundService _soundService;
 
@@ -51,9 +51,19 @@ namespace CodeBase.Services.Audio
             _soundService.UnmuteSound(soundName);
         }
 
-        public float GetSoundLenght(string soundName)
+        public float GetSoundLength(string soundName)
         {
-            return _soundService.GetSoundLenght(soundName);
+            return _soundService.GetSoundLength(soundName);
+        }
+
+        public void SetVolumeConcreteSound(string soundName, float volume)
+        {
+            _soundService.SetVolumeConcreteSound(soundName, volume);
+        }
+
+        public float GetSoundVolume(string soundName)
+        {
+            return _soundService.GetSoundVolume(soundName);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace CodeBase.Services.Audio
 {
@@ -21,24 +22,27 @@ namespace CodeBase.Services.Audio
         public float randomVolume = 0.1f;
         [Range(0.0f, 0.5f)]
         public float randomPitch = 0.1f;
-
+        
+        public bool playOnAwake = false;
         public bool loop = false;
 
-        private AudioSource source;
+        [HideInInspector]public AudioSource source;
 
-        public void SetSource (AudioSource _source)
+        public void SetSource(AudioSource _source)
         {
             source = _source;
             source.clip = clip;
             source.loop = loop;
-            source.playOnAwake = false;
+            source.playOnAwake = playOnAwake;
         }
 
         public void Play ()
         {
+           
             if (source) {
-              //  source.volume = volume * (1 + Random.Range (-randomVolume / 2.0f, randomVolume / 2.0f)) * masterVolume;
-              //  source.pitch = pitch * (1 + Random.Range (-randomPitch / 2.0f, randomPitch / 2.0f)) * masterPitch;
+                
+                source.volume = volume * (1 + Random.Range (-randomVolume / 2.0f, randomVolume / 2.0f)) * masterVolume;
+                source.pitch = pitch * (1 + Random.Range (-randomPitch / 2.0f, randomPitch / 2.0f)) * masterPitch;
                 source.Play ();
             }
         }
