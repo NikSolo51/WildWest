@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: LastItem
   m_EditorClassIdentifier: 
   itemType: 8
-  Sprite: {fileID: 21300000, guid: f9161c6c9e06dc445ada3ee16d991f90, type: 3}
+  Sprite: {fileID: 21300000, guid: dbf77fd7a318c454d9b7a5b8cfbb5a6d, type: 3}
   Description: 
   UIPerefab:
     m_AssetGUID: 1b85e9736fde4fe41bac24017fb05879

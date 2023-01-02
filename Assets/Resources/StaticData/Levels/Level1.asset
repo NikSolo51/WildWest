@@ -21,46 +21,89 @@ MonoBehaviour:
       masterVolume: 1
       masterPitch: 1
       volume: 0.533
-      pitch: 0
+      pitch: 1
       randomVolume: 0
       randomPitch: 0.224
+      playOnAwake: 0
       loop: 0
+      source: {fileID: 0}
     - name: tap2
       clip: {fileID: 8300000, guid: acd7a14da8662394daebeacf812f100e, type: 3}
       masterVolume: 1
       masterPitch: 1
       volume: 0.412
-      pitch: 0
+      pitch: 1
       randomVolume: 0
       randomPitch: 0.215
+      playOnAwake: 0
       loop: 0
+      source: {fileID: 0}
     - name: tap3
       clip: {fileID: 8300000, guid: 6f19611d0fcda34458a773efd9697552, type: 3}
       masterVolume: 1
       masterPitch: 1
       volume: 0.415
-      pitch: 0
+      pitch: 1
       randomVolume: 0
       randomPitch: 0.195
+      playOnAwake: 0
       loop: 0
+      source: {fileID: 0}
     - name: tap4
       clip: {fileID: 8300000, guid: a2d6517c9d867644e9ad2f59d3a8ec85, type: 3}
       masterVolume: 1
       masterPitch: 1
       volume: 0.316
-      pitch: 0
+      pitch: 1
       randomVolume: 0
       randomPitch: 0.152
+      playOnAwake: 0
       loop: 0
+      source: {fileID: 0}
     - name: openslot
       clip: {fileID: 8300000, guid: f30970ea41edf38488af64171d478f8d, type: 3}
       masterVolume: 1
       masterPitch: 1
       volume: 0.316
-      pitch: 0
+      pitch: 1
       randomVolume: 0
       randomPitch: 0.258
+      playOnAwake: 0
       loop: 0
+      source: {fileID: 0}
+    - name: TtrainBG
+      clip: {fileID: 8300000, guid: b3bd8de73daaf41499129b2382918014, type: 3}
+      masterVolume: 1
+      masterPitch: 1
+      volume: 0.023
+      pitch: 1
+      randomVolume: 0
+      randomPitch: 0
+      playOnAwake: 1
+      loop: 1
+      source: {fileID: 0}
+    - name: MusicBG
+      clip: {fileID: 8300000, guid: 9a8752f67e5d75a4abd17b496fe9df24, type: 3}
+      masterVolume: 1
+      masterPitch: 1
+      volume: 0.55
+      pitch: 1
+      randomVolume: 0
+      randomPitch: 0
+      playOnAwake: 1
+      loop: 1
+      source: {fileID: 0}
+    - name: TikTak
+      clip: {fileID: 8300000, guid: ce6bf250c37dedd4e97d7d4fa5c078f6, type: 3}
+      masterVolume: 1
+      masterPitch: 1
+      volume: 0.179
+      pitch: 1
+      randomVolume: 0
+      randomPitch: 0
+      playOnAwake: 1
+      loop: 1
+      source: {fileID: 0}
     _clips: []
   PuzzleSpawners:
   - puzzelName: 1

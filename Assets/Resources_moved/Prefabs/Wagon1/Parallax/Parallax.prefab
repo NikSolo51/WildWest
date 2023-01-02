@@ -97,9 +97,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68e87d0a19c4391870bddab0339cb2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followingTarget: {fileID: 0}
-  parallaxStrength: 0.229
-  disableVerticalParallax: 0
+  _followingTarget: {fileID: 0}
+  _parallaxStrength: 0.1
+  _disableVerticalParallax: 0
 --- !u!1 &805787853509948816
 GameObject:
   m_ObjectHideFlags: 0
@@ -235,9 +235,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68e87d0a19c4391870bddab0339cb2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followingTarget: {fileID: 0}
-  parallaxStrength: 0.1
-  disableVerticalParallax: 0
+  _followingTarget: {fileID: 0}
+  _parallaxStrength: 0.1
+  _disableVerticalParallax: 0
 --- !u!1 &805787854143808963
 GameObject:
   m_ObjectHideFlags: 0
@@ -335,9 +335,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68e87d0a19c4391870bddab0339cb2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followingTarget: {fileID: 0}
-  parallaxStrength: 1
-  disableVerticalParallax: 0
+  _followingTarget: {fileID: 0}
+  _parallaxStrength: 0.1
+  _disableVerticalParallax: 0
 --- !u!1 &805787854958066518
 GameObject:
   m_ObjectHideFlags: 0
@@ -435,9 +435,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68e87d0a19c4391870bddab0339cb2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followingTarget: {fileID: 0}
-  parallaxStrength: 0.667
-  disableVerticalParallax: 0
+  _followingTarget: {fileID: 0}
+  _parallaxStrength: 0.1
+  _disableVerticalParallax: 0
 --- !u!1 &805787855009949400
 GameObject:
   m_ObjectHideFlags: 0
@@ -535,9 +535,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68e87d0a19c4391870bddab0339cb2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followingTarget: {fileID: 0}
-  parallaxStrength: 0.754
-  disableVerticalParallax: 0
+  _followingTarget: {fileID: 0}
+  _parallaxStrength: 0.1
+  _disableVerticalParallax: 0
 --- !u!1 &805787855203350856
 GameObject:
   m_ObjectHideFlags: 0
@@ -635,9 +635,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68e87d0a19c4391870bddab0339cb2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followingTarget: {fileID: 0}
-  parallaxStrength: 0.439
-  disableVerticalParallax: 0
+  _followingTarget: {fileID: 0}
+  _parallaxStrength: 0.1
+  _disableVerticalParallax: 0
 --- !u!1 &2863790276516851685
 GameObject:
   m_ObjectHideFlags: 0
@@ -735,6 +735,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e68e87d0a19c4391870bddab0339cb2c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  followingTarget: {fileID: 0}
-  parallaxStrength: 0.1
-  disableVerticalParallax: 0
+  _followingTarget: {fileID: 0}
+  _parallaxStrength: 0.1
+  _disableVerticalParallax: 0

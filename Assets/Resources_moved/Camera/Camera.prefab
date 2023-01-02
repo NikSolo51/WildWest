@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 6381820611574218999}
   - component: {fileID: 5019244614112904191}
   - component: {fileID: 2732652571086225461}
+  - component: {fileID: 4494430316751372986}
   m_Layer: 0
   m_Name: Camera
   m_TagString: MainCamera
@@ -102,7 +103,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _layermask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 95
 --- !u!114 &6381820611574218999
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,8 +116,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6f20a9ec12d6cff4690b78719be3edb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offset: {x: 0.1, y: 0, z: 0}
-  smoothSpeed: 0.01
+  _offset: {x: 0, y: 0, z: 0}
+  _smoothSpeed: 0.125
+  _enableBorders: 1
+  _xLeftBorder: -8
+  _xRightBorder: 8
+  OnCameraMoving:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCameraNotMoving:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &5019244614112904191
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -142,6 +152,45 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _zoomMinBound: 50
-  _zoomMaxBound: 70
+  _zoomMaxBound: 60
   _camera: {fileID: 6381820611574218994}
   _inverseScroll: 1
+  _mouseZoomSpeed: 15
+  _touchZoomSpeed: 0.1
+--- !u!114 &4494430316751372986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6381820611574218992}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29f92202158c46b4ae6cb332be4347c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0
+      outWeight: 0.330931
+    - serializedVersion: 3
+      time: 1
+      value: 0.1
+      inSlope: -0.0009282457
+      outSlope: -0.0009282457
+      tangentMode: 0
+      weightedMode: 3
+      inWeight: 0.358689
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _shakeTime: 2

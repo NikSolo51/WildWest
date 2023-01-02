@@ -1,0 +1,14 @@
+# Blender 3.4.1 MTL File: 'Train_steal.blend'
+# www.blender.org
+
+newmtl Material_all
+Ka 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ni 1.450000
+illum 2
+map_Kd C:/Users/Xelka/Desktop/Souls Ring/Model/Texture/Material_all_BaseColor.png
+map_Ns C:/Users/Xelka/Desktop/Souls Ring/Model/Texture/Material_all_Roughness.png
+map_refl C:/Users/Xelka/Desktop/Souls Ring/Model/Texture/Material_all_Metallic.png
+map_Ke C:/Users/Xelka/Desktop/Souls Ring/Model/Texture/Material_all_Emission.png
+map_d C:/Users/Xelka/Desktop/Souls Ring/Model/Texture/Material_all_Alpha.png
+map_Bump -bm 1.000000 C:/Users/Xelka/Desktop/Souls Ring/Model/Texture/Material_all_Normal.png
