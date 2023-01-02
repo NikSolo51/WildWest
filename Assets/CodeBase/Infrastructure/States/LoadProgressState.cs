@@ -6,7 +6,6 @@ namespace CodeBase.Infrastructure.States
 {
     public class LoadProgressState : IState
     {
-        private const string InitialLevel = "Level1";
         private readonly GameStateMachine _gameStateMachine;
         private readonly IPersistentProgressService _progressService;
         private readonly ISaveLoadService _saveLoadService;
@@ -36,7 +35,7 @@ namespace CodeBase.Infrastructure.States
 
         private PlayerProgress NewProgress()
         {
-            PlayerProgress progress = new PlayerProgress(initialLevel: InitialLevel);
+            PlayerProgress progress = new PlayerProgress(initialLevel: Constants.InitialLevel);
             return progress;
         }
     }

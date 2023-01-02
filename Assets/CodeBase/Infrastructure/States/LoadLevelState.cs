@@ -29,6 +29,7 @@ namespace CodeBase.Infrastructure.States
         private IStaticDataService _staticData;
         private IUIItemInventory _uiItemInventory;
         public ISaveLoadService _saveLoadService;
+
         public LoadLevelState(GameStateMachine stateMachine,
             SceneLoader sceneLoader,
             LoadingCurtain curtain,
@@ -76,28 +77,28 @@ namespace CodeBase.Infrastructure.States
             IInputService inputService = AllServices.Container.Single<IInputService>();
             IUpdateService updateService = AllServices.Container.Single<IUpdateService>();
             ISaveLoadService saveLoadService = AllServices.Container.Single<ISaveLoadService>();
-            
+
             InitUpdateManger(updateService);
 
-            GameObject hero = await CreateHero(levelData,updateService);
+            GameObject hero = await CreateHero(levelData, updateService);
 
             GameObject camera = await InitCamera(levelData);
-            ICameraRaycast cameraRaycast =  await InitCameraRaycast(camera,hero.transform);
+            ICameraRaycast cameraRaycast = await InitCameraRaycast(camera, hero.transform);
             CameraShake cameraShake = camera.GetComponent<CameraShake>();
             cameraShake.Construct(updateService);
-            
-            await InitHero(hero,cameraRaycast,inputService,saveLoadService);
+
+            await InitHero(hero, cameraRaycast, inputService, saveLoadService, updateService);
             GameObject hud = await InitHud(hero);
-            
+
             RegisterInventory();
-            
-            InitPointAndClickSystem(camera, hero,cameraRaycast,inputService);
-            await InitPuzzles(levelData, hud,soundManager);
-            
-            FollowCamera(hero, camera,cameraRaycast,updateService,inputService);
-            
+
+            InitPointAndClickSystem(camera, hero, cameraRaycast, inputService);
+            await InitPuzzles(levelData, hud, soundManager);
+
+            FollowCamera(hero, camera, cameraRaycast, updateService, inputService);
+
             GameObject parallax = await _gameFactory.CreateParallax();
-            InitParallax(parallax,camera);
+            InitParallax(parallax, camera);
         }
 
         private void RegisterInventory()
@@ -107,9 +108,9 @@ namespace CodeBase.Infrastructure.States
 
         private async void InitUpdateManger(IUpdateService updateService)
         {
-             GameObject updateManager = await _gameFactory.CreateUpdateManager();
-             UpdateManagerProvider updateProvider = updateManager.GetComponent<UpdateManagerProvider>();
-             updateProvider.Construct(updateService);
+            GameObject updateManager = await _gameFactory.CreateUpdateManager();
+            UpdateManagerProvider updateProvider = updateManager.GetComponent<UpdateManagerProvider>();
+            updateProvider.Construct(updateService);
         }
 
         private async Task<ISoundService> InitializeAudio(SoundManagerData soundManagerData)
@@ -119,39 +120,41 @@ namespace CodeBase.Infrastructure.States
             return soundManager;
         }
 
-        private void InitPointAndClickSystem(GameObject camera, GameObject hero,ICameraRaycast cameraRaycast,IInputService inputService)
+        private void InitPointAndClickSystem(GameObject camera, GameObject hero, ICameraRaycast cameraRaycast,
+            IInputService inputService)
         {
-           TargetByDistanceActivator targetByDistanceActivator = camera.GetComponent<TargetByDistanceActivator>();
+            TargetByDistanceActivator targetByDistanceActivator = camera.GetComponent<TargetByDistanceActivator>();
             targetByDistanceActivator.Construct(hero.transform, cameraRaycast,
                 inputService);
         }
 
-        private async Task<ICameraRaycast> InitCameraRaycast(GameObject camera,Transform heroTransform)
+        private async Task<ICameraRaycast> InitCameraRaycast(GameObject camera, Transform heroTransform)
         {
             CameraRayCast cameraRayCast = camera.GetComponent<CameraRayCast>();
-            cameraRayCast.Construct(camera.GetComponent<Camera>(),heroTransform);
+            cameraRayCast.Construct(camera.GetComponent<Camera>(), heroTransform);
             RegisterRaycastService(cameraRayCast);
 
             return cameraRayCast;
         }
 
 
-        private async Task InitHero(GameObject hero,ICameraRaycast cameraRayCast,IInputService inputService, ISaveLoadService saveLoadService)
+        private async Task InitHero(GameObject hero, ICameraRaycast cameraRayCast, IInputService inputService,
+            ISaveLoadService saveLoadService, IUpdateService updateService)
         {
             HeroMove heroMove = hero.GetComponent<HeroMove>();
-            heroMove.Construct(cameraRayCast,inputService,saveLoadService);
+            heroMove.Construct(cameraRayCast, inputService, saveLoadService, updateService);
         }
 
-        private async Task<GameObject> CreateHero(LevelStaticData levelData,IUpdateService updateService)
+        private async Task<GameObject> CreateHero(LevelStaticData levelData, IUpdateService updateService)
         {
-            GameObject hero = await _gameFactory.CreateHero(levelData.InitialHeroPosition,updateService);
+            GameObject hero = await _gameFactory.CreateHero(levelData.InitialHeroPosition, updateService);
             return hero;
         }
 
         private async Task<GameObject> InitCamera(LevelStaticData levelData)
         {
             GameObject camera = await _gameFactory.CreateCamera(levelData.InitialCameraPosition);
-           
+
             return camera;
         }
 
@@ -162,11 +165,11 @@ namespace CodeBase.Infrastructure.States
             {
                 PuzzleSpawnerData puzzleSpawner = levelData.PuzzleSpawners[i];
                 await _gameFactory.CreatePuzzle(puzzleSpawner._position, puzzleSpawner.id, puzzleSpawner.puzzelName,
-                    hud.transform,levelSoundManager);
+                    hud.transform, levelSoundManager);
             }
         }
 
-        private void InitParallax(GameObject parallax,GameObject camera)
+        private void InitParallax(GameObject parallax, GameObject camera)
         {
             Parallax[] parallaxes = parallax.GetComponentsInChildren<Parallax>();
             for (int i = 0; i < parallaxes.Length; i++)
@@ -181,31 +184,32 @@ namespace CodeBase.Infrastructure.States
             return hud;
         }
 
-        private void FollowCamera(GameObject hero, GameObject camera, ICameraRaycast cameraRayCast,IUpdateService updateService,IInputService inputService)
+        private void FollowCamera(GameObject hero, GameObject camera, ICameraRaycast cameraRayCast,
+            IUpdateService updateService, IInputService inputService)
         {
             CameraFollow cameraFollow = camera.GetComponent<CameraFollow>();
-            cameraFollow.Construct(hero.transform, cameraRayCast,updateService );
-            
-            IZoomService zoomService = PinchAndZoomSet(camera,inputService);
+            cameraFollow.Construct(hero.transform, cameraRayCast, updateService);
+
+            IZoomService zoomService = PinchAndZoomSet(camera, inputService);
             AllServices.Container.RegisterSingle<IZoomService>(zoomService);
-            
+
             PinchAndZoom pinchAndZoom = camera.GetComponent<PinchAndZoom>();
-            pinchAndZoom.Construct(updateService,zoomService);
+            pinchAndZoom.Construct(updateService, zoomService);
         }
 
-        IZoomService PinchAndZoomSet(GameObject cameraObj,IInputService inputService)
+        IZoomService PinchAndZoomSet(GameObject cameraObj, IInputService inputService)
         {
             Camera camera = cameraObj.GetComponent<Camera>();
             if (Input.touchSupported)
             {
                 CameraZoomer cameraZoomer = new MobileZoom();
-                cameraZoomer.Construct(camera,inputService);
+                cameraZoomer.Construct(camera, inputService);
                 return cameraZoomer;
             }
             else
             {
                 CameraZoomer cameraZoomer = new StandaloneZoom();
-                cameraZoomer.Construct(camera,inputService);
+                cameraZoomer.Construct(camera, inputService);
                 return cameraZoomer;
             }
         }
