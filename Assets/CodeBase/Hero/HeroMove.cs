@@ -21,16 +21,13 @@ namespace CodeBase.Hero
         private IUpdateService _updateService;
         private ISaveLoadService _saveLoadService;
 
-        public void Construct(ICameraRaycast cameraRayCast, IInputService inputService,ISaveLoadService saveLoadService)
+        public void Construct(ICameraRaycast cameraRayCast, IInputService inputService,
+            ISaveLoadService saveLoadService, IUpdateService updateService)
         {
             _cameraRayCast = cameraRayCast;
             _movementMovementInputSerivce = inputService;
             _saveLoadService = saveLoadService;
-        }
-
-        private void OnEnable()
-        {
-            _updateService = AllServices.Container.Single<IUpdateService>();
+            _updateService = updateService;
             _updateService.Register(this);
         }
 
@@ -43,7 +40,8 @@ namespace CodeBase.Hero
         public void UpdateTick()
         {
             if (_movementMovementInputSerivce != null)
-                if (_movementMovementInputSerivce.IsClickButtonUp() || _movementMovementInputSerivce.IsClickButtonPress())
+                if (_movementMovementInputSerivce.IsClickButtonUp() ||
+                    _movementMovementInputSerivce.IsClickButtonPress())
                     MovingByClick();
         }
 
@@ -64,9 +62,9 @@ namespace CodeBase.Hero
                     HeroAgent.speed = _runSpeed;
                 }
             }
-            
+
             HeroAgent.destination = movementPoint;
-            Vector3 rotationDir = new Vector3(movementPoint.x, transform.position.y,movementPoint.z);
+            Vector3 rotationDir = new Vector3(movementPoint.x, transform.position.y, movementPoint.z);
             HeroAgent.transform.LookAt(rotationDir);
         }
 
@@ -81,16 +79,17 @@ namespace CodeBase.Hero
         {
             if (CurrentLevel() == progress.WorldData.PositionOnLevel.Level)
             {
-                Vector3Data savedPosition = progress.WorldData.PositionOnLevel.Position;
-                if (savedPosition != null)
+                Vector3 savedPosition = progress.WorldData.PositionOnLevel.Position.AsUnityVector();
+                
+                if (savedPosition != Vector3.zero)
                     Warp(to: savedPosition);
             }
         }
 
-        private void Warp(Vector3Data to)
+        private void Warp(Vector3 to)
         {
             HeroAgent.enabled = false;
-            transform.position = to.AsUnityVector();
+            transform.position = to;
             HeroAgent.enabled = true;
         }
 
