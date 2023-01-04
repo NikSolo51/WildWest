@@ -19,8 +19,9 @@ namespace CodeBase.Services.SaveLoad
 
         public void SaveProgress()
         {
-            foreach (ISavedProgress progressWriter in ProgressWriters)
+            for (int index = 0; index < ProgressWriters.Count; index++)
             {
+                ISavedProgress progressWriter = ProgressWriters[index];
                 progressWriter.UpdateProgress(_progressService.Progress);
             }
 
@@ -46,8 +47,9 @@ namespace CodeBase.Services.SaveLoad
 
         public void InformProgressReaders()
         {
-            foreach (ISavedProgressReader progressReader in ProgressReaders)
+            for (int index = 0; index < ProgressReaders.Count; index++)
             {
+                ISavedProgressReader progressReader = ProgressReaders[index];
                 progressReader.LoadProgress(_progressService.Progress);
             }
         }

@@ -56,8 +56,11 @@ namespace CodeBase.Infrastructure.AssetManagement
         public void CleanUp()
         {
             foreach (List<AsyncOperationHandle> resourceHandles in _handles.Values)
-            foreach (AsyncOperationHandle handle in resourceHandles)
-                Addressables.Release(handle);
+            {
+                foreach (AsyncOperationHandle handle in resourceHandles)
+                    Addressables.Release(handle);
+            }
+
             _completedCache.Clear();
             _handles.Clear();
         }

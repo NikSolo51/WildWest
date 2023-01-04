@@ -219,8 +219,10 @@ namespace CodeBase.Infrastructure.Factory
 
         private void RegisterProgressWatchers(GameObject gameObject)
         {
-            foreach (ISavedProgressReader progressReader in gameObject.GetComponentsInChildren<ISavedProgressReader>())
+            ISavedProgressReader[] readers = gameObject.GetComponentsInChildren<ISavedProgressReader>();
+            for (var index = 0; index < readers.Length; index++)
             {
+                ISavedProgressReader progressReader = readers[index];
                 _saveLoadService.Register(progressReader);
             }
         }

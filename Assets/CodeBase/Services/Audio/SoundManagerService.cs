@@ -2,7 +2,7 @@
 
 namespace CodeBase.Services.Audio.SoundManager
 {
-    public class SoundManager : SoundManagerAbstract
+    public class SoundManagerService : SoundManagerAbstract
     {
         void Start()
         {

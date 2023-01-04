@@ -79,10 +79,13 @@ namespace CodeBase.Hero
         {
             if (CurrentLevel() == progress.WorldData.PositionOnLevel.Level)
             {
-                Vector3 savedPosition = progress.WorldData.PositionOnLevel.Position.AsUnityVector();
+                if (progress.WorldData.PositionOnLevel.Position != null)
+                {
+                    Vector3 savedPosition = progress.WorldData.PositionOnLevel.Position.AsUnityVector();
                 
-                if (savedPosition != Vector3.zero)
-                    Warp(to: savedPosition);
+                    if (savedPosition != Vector3.zero)
+                        Warp(to: savedPosition);
+                }
             }
         }
 
