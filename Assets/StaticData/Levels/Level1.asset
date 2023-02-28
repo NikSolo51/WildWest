@@ -28,5 +28,5 @@ MonoBehaviour:
       loop: 0
       source: {fileID: 0}
     _clips: []
-  InitialHeroPosition: {x: -7.99, y: 0, z: 0}
-  InitialCameraPosition: {x: -7.99, y: 2.36, z: -8.15}
+  InitialHeroPosition: {x: 0, y: 0, z: 0}
+  InitialCameraPosition: {x: 0, y: 0, z: 0}

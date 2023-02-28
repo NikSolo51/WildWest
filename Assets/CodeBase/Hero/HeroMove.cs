@@ -1,4 +1,5 @@
 using CodeBase.Data;
+using CodeBase.Infrastructure.Services;
 using CodeBase.Services.Camera;
 using CodeBase.Services.Input;
 using CodeBase.Services.SaveLoad;
@@ -6,7 +7,6 @@ using CodeBase.Services.Update;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.SceneManagement;
-using Zenject;
 
 namespace CodeBase.Hero
 {
@@ -20,8 +20,7 @@ namespace CodeBase.Hero
         private IInputService _movementMovementInputSerivce;
         private IUpdateService _updateService;
         private ISaveLoadService _saveLoadService;
-        
-        [Inject]
+
         public void Construct(ICameraRaycast cameraRayCast, IInputService inputService,
             ISaveLoadService saveLoadService, IUpdateService updateService)
         {
@@ -40,7 +39,6 @@ namespace CodeBase.Hero
 
         public void UpdateTick()
         {
-            
             if (_movementMovementInputSerivce != null)
                 if (_movementMovementInputSerivce.IsClickButtonUp() ||
                     _movementMovementInputSerivce.IsClickButtonPress())

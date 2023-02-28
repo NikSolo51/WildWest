@@ -1,18 +1,13 @@
 using CodeBase.Infrastructure.AssetManagement;
 using CodeBase.Infrastructure.Factory;
 using CodeBase.Infrastructure.States;
-using CodeBase.Logic.CameraRaycast;
-using CodeBase.Services.Camera;
-using CodeBase.Services.Hud;
 using CodeBase.Services.Input;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.Randomaizer;
 using CodeBase.Services.SaveLoad;
 using CodeBase.Services.StaticData;
 using CodeBase.Services.Update;
-using CodeBase.Services.Zoom;
-using CodeBase.UI.UIInventory;
-using CodeBase.UI.UIInventory.Interfaces;
+using UnityEngine;
 using Zenject;
 
 public class BootstrapInstaller : MonoInstaller
@@ -22,10 +17,7 @@ public class BootstrapInstaller : MonoInstaller
     public override void InstallBindings()
     {
         Container.Bind<IInputService>().To<StandaloneInputService>().AsSingle().NonLazy();
-        
-        GameStateMachine gameStateMachine = new GameStateMachine();
-        Container.Bind<GameStateMachine>().FromInstance(gameStateMachine).AsSingle().NonLazy();
-        Container.Bind<IGameStateMachine>().FromInstance(gameStateMachine).AsSingle().NonLazy();
+        Container.Bind<GameStateMachine>().AsSingle().NonLazy();
 
         RegisterAssetProvider();
         RegisterStaticData();
@@ -44,11 +36,6 @@ public class BootstrapInstaller : MonoInstaller
             Container.Resolve<ISaveLoadService>(),
             _container
             ).NonLazy();
-        
-        UIInventory uiInventory = new UIInventory();
-        _container.Bind<IUIItemInventory>().FromInstance(uiInventory);
-        IHudService hudService = new HudStateService();
-        _container.Bind<IHudService>().FromInstance(hudService);
     }
 
     private void RegisterAssetProvider()

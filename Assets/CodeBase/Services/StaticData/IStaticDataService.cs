@@ -1,17 +1,19 @@
 ﻿using System.Collections.Generic;
+using CodeBase.Infrastructure.Services;
 using CodeBase.Inventory;
+using CodeBase.Logic.Spawner;
 using CodeBase.Services.Audio.SoundManager;
 
 namespace CodeBase.Services.StaticData
 {
-    public interface IStaticDataService 
+    public interface IStaticDataService : IService
     {
         void Initialize();
+        ItemStaticData ForItem(ItemType typeId);
         LevelStaticData ForLevel(string sceneKey);
 
-        SoundManagerStaticData ForSoundManager(SoundManagerType soundManagerType);
         List<RecipeStaticData> GetAllRecipes();
-        ItemStaticData ForItem(ItemType typeId);
-        RecipeStaticData ForRecipe(ItemType recipeType);
+        PuzzleStaticData ForPuzzel(PuzzelName puzzelName);
+        SoundManagerStaticData ForSoundManager(SoundManagerType soundManagerType);
     }
 }

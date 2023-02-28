@@ -1,6 +1,8 @@
-﻿namespace CodeBase.Services.Update
+﻿using CodeBase.Infrastructure.Services;
+
+namespace CodeBase.Services.Update
 {
-    public interface IUpdateService 
+    public interface IUpdateService : IService
     {
         void Update();
         void FixedUpdate();

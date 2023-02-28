@@ -1,9 +1,9 @@
-﻿using CodeBase.Logic.Target;
+﻿using CodeBase.Infrastructure.Services;
+using CodeBase.Logic.Target;
 using CodeBase.Services.Camera;
 using CodeBase.Services.Input;
 using CodeBase.Services.Update;
 using UnityEngine;
-using Zenject;
 
 namespace CodeBase.CameraLogic
 {
@@ -16,13 +16,10 @@ namespace CodeBase.CameraLogic
         private ICameraRaycast _cameraRaycast;
         private IInputService _inputService;
         private IUpdateService _updateService;
-        
-        [Inject]
-        public void Construct(ICameraRaycast cameraRaycast, IInputService inputService,IUpdateService updateService)
+
+        private void OnEnable()
         {
-            _cameraRaycast = cameraRaycast;
-            _inputService = inputService;
-            _updateService = updateService;
+            _updateService = AllServices.Container.Single<IUpdateService>();
             _updateService.Register(this);
         }
 
@@ -30,10 +27,12 @@ namespace CodeBase.CameraLogic
         {
             _updateService.Unregister(this);
         }
-
-        public void SetPlayer(Transform hero)
+        
+        public void Construct(Transform hero, ICameraRaycast cameraRaycast, IInputService inputService)
         {
             _hero = hero;
+            _cameraRaycast = cameraRaycast;
+            _inputService = inputService;
         }
         
         public void UpdateTick()

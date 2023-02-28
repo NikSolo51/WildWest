@@ -1,6 +1,6 @@
-﻿using CodeBase.Services.Update;
+﻿using CodeBase.Infrastructure.Services;
+using CodeBase.Services.Update;
 using UnityEngine;
-using Zenject;
 
 namespace CodeBase.Logic.Parallax
 {
@@ -12,21 +12,17 @@ namespace CodeBase.Logic.Parallax
         private Vector3 _targetPreviousPosition;
         private IUpdateService _updateService;
 
-        [Inject]
-        public void Construct(IUpdateService updateService)
+        public void Construct(GameObject camera)
         {
-            _updateService = updateService;
+            if (!_followingTarget)
+                _followingTarget = camera.transform;
+
+            _targetPreviousPosition = _followingTarget.position;
         }
-        // public void Construct(GameObject camera)
-        // {
-        //     if (!_followingTarget)
-        //         _followingTarget = camera.transform;
-        //
-        //     _targetPreviousPosition = _followingTarget.position;
-        // }
         
         private void OnEnable()
         {
+            _updateService = AllServices.Container.Single<IUpdateService>();
             _updateService.Register(this);
         }
 

@@ -1,7 +1,9 @@
 ﻿
+using CodeBase.Infrastructure.Services;
+
 namespace CodeBase.Services.Audio
 {
-    public interface ISoundService 
+    public interface ISoundService : IService
     {
         void PlaySound (string soundName);
         void StopSound (string soundName);

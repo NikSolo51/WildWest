@@ -1,6 +1,6 @@
-﻿using CodeBase.Infrastructure.States;
+﻿using CodeBase.Infrastructure.Services;
+using CodeBase.Infrastructure.States;
 using CodeBase.Logic;
-using Zenject;
 
 namespace CodeBase.Infrastructure
 {
@@ -8,15 +8,9 @@ namespace CodeBase.Infrastructure
     {
         public GameStateMachine StateMachine;
 
-        public Game(GameStateMachine stateMachine)
+        public Game(ICoroutineRunner coroutineRunner, LoadingCurtain curtain)
         {
-            StateMachine = stateMachine;
-        }
-
-        public void Construct(ICoroutineRunner coroutineRunner,LoadingCurtain curtain,DiContainer diContainer)
-        {
-            SceneLoader sceneLoader =new SceneLoader(coroutineRunner);
-            StateMachine.Construct(sceneLoader,diContainer,curtain);
+            StateMachine = new GameStateMachine(new SceneLoader(coroutineRunner), curtain, AllServices.Container);
         }
     }
 }

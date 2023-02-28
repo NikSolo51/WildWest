@@ -1,9 +1,10 @@
-﻿using CodeBase.Inventory;
+﻿using CodeBase.Infrastructure.Services;
+using CodeBase.Inventory;
 using CodeBase.Services.SaveLoad;
 
 namespace CodeBase.UI.UIInventory.Interfaces
 {
-    public interface IUIItemInventory : ISavedProgress
+    public interface IUIItemInventory : IService,ISavedProgress
     {
         void RegisterNewItem(ItemType itemType);
         void RegisterNewSlot(UISlot slot);

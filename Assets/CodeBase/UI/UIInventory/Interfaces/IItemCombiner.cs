@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
+using CodeBase.Infrastructure.Services;
 using CodeBase.Inventory;
 using CodeBase.Services.StaticData;
 
 namespace CodeBase.UI.UIInventory.Interfaces
 {
-    public interface IItemCombiner 
+    public interface IItemCombiner : IService
     {
         public void Select(ItemType type);
         public void Clear();

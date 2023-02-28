@@ -1,3 +1,5 @@
+using CodeBase.Infrastructure.Services;
+using CodeBase.Services.Camera;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -16,10 +18,12 @@ namespace CodeBase.Logic
             toggle = !toggle;
             if (toggle)
             {
+                AllServices.Container.Single<ICameraRaycast>().DisableRayCast();
                 ToggleOn?.Invoke();
             }
             else
             {
+                AllServices.Container.Single<ICameraRaycast>().EnableRayCast();
                 ToggleOff?.Invoke();
             }
         }

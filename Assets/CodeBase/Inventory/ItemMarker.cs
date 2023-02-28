@@ -1,4 +1,5 @@
-﻿using CodeBase.UI.UIInventory.Interfaces;
+﻿using CodeBase.Infrastructure.Services;
+using CodeBase.UI.UIInventory.Interfaces;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -11,10 +12,10 @@ namespace CodeBase.Inventory
 
         private IUIItemInventory _itemInventory;
 
-        // private void Awake()
-        // {
-        //     _itemInventory = AllServices.Container.Single<IUIItemInventory>();
-        // }
+        private void Awake()
+        {
+            _itemInventory = AllServices.Container.Single<IUIItemInventory>();
+        }
 
         private void OnTriggerEnter(Collider other)
         {

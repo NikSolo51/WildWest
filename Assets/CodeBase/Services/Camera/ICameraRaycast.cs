@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using CodeBase.Infrastructure.Services;
+using UnityEngine;
 
 namespace CodeBase.Services.Camera
 {
-    public interface ICameraRaycast 
+    public interface ICameraRaycast : IService
     {
         public void EnableRayCast();
         public void DisableRayCast();

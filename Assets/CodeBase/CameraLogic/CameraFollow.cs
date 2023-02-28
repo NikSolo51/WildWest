@@ -2,7 +2,6 @@
 using CodeBase.Services.Update;
 using UnityEngine;
 using UnityEngine.Events;
-using Zenject;
 
 namespace CodeBase.CameraLogic
 {
@@ -25,24 +24,19 @@ namespace CodeBase.CameraLogic
 
         public UnityEvent OnCameraMoving;
         public UnityEvent OnCameraNotMoving;
-        
-        [Inject]
-        public async void Construct(ICameraRaycast cameraRayCast, IUpdateService updateService)
+
+        public void Construct(Transform body, ICameraRaycast cameraRayCast, IUpdateService updateService)
         {
+            _body = body;
             _cameraRayCast = cameraRayCast;
-            
+
             _updateService = updateService;
             _updateService.Register(this);
         }
-        
+
         private void OnDisable()
         {
             _updateService.Unregister(this);
-        }
-
-        public void SetupPlayer(Transform body)
-        {
-            _body = body;
         }
 
         public void LateUpdateTick()

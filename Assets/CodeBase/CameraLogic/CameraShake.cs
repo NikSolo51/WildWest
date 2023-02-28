@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using CodeBase.Services.Update;
 using UnityEngine;
-using Zenject;
 
 namespace CodeBase.CameraLogic
 {
@@ -12,8 +11,7 @@ namespace CodeBase.CameraLogic
         private Vector3 _startPos;
         private bool _shake;
         private IUpdateService _updateService;
-        
-        [Inject]
+
         public void Construct(IUpdateService updateService)
         {
             _updateService = updateService;

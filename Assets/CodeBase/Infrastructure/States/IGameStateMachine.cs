@@ -1,6 +1,8 @@
-﻿namespace CodeBase.Infrastructure.States
+﻿using CodeBase.Infrastructure.Services;
+
+namespace CodeBase.Infrastructure.States
 {
-    public interface IGameStateMachine 
+    public interface IGameStateMachine : IService
     {
         void Enter<TState>() where TState : class, IState;
         void Enter<TState, TPayload>(TPayload payload) where TState : class, IPayLoadedState<TPayload>;
