@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Services.Update
 {
     public class UpdateManagerProvider : MonoBehaviour
     {
         private IUpdateService _updateService;
-
+        
+        [Inject]
         public void Construct(IUpdateService updateService)
         {
             _updateService = updateService;

@@ -2,17 +2,19 @@
 using CodeBase.Data;
 using CodeBase.Services.PersistentProgress;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Services.SaveLoad
 {
     public class SaveLoadService : ISaveLoadService
     {
-        private readonly IPersistentProgressService _progressService;
+        private  IPersistentProgressService _progressService;
         private const string ProgressKey = "Progress";
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
-
-        public SaveLoadService(IPersistentProgressService progressService)
+        
+        [Inject]
+        public void Construct(IPersistentProgressService progressService)
         {
             _progressService = progressService;
         }

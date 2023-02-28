@@ -1,8 +1,6 @@
-﻿using CodeBase.Infrastructure.Services;
-
-namespace CodeBase.Services.Randomaizer
+﻿namespace CodeBase.Services.Randomaizer
 {
-    public interface IRandomService : IService
+    public interface IRandomService 
     {
         int Next(int minValue, int maxValue);
     }

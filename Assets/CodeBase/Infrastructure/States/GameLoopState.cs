@@ -2,7 +2,7 @@
 {
     public class GameLoopState : IState
     {
-        public GameLoopState(GameStateMachine gameStateMachine)
+        public GameLoopState()
         {
         }
 

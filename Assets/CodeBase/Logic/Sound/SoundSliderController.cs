@@ -1,7 +1,7 @@
-﻿using CodeBase.Infrastructure.Services;
-using CodeBase.Services.Audio;
+﻿using CodeBase.Services.Audio;
 using UnityEngine;
 using UnityEngine.UI;
+using Zenject;
 
 namespace CodeBase.Logic.Sound
 {
@@ -11,10 +11,15 @@ namespace CodeBase.Logic.Sound
         [SerializeField] private string[] _soundNames;
         [SerializeField] private bool _synchronizeWithSoundManager = true;
         private ISoundService _soundService;
+        
+        [Inject]
+        public void Construct(ISoundService soundService)
+        {
+            _soundService = soundService;
+        }
 
         private void Start()
         {
-            _soundService = AllServices.Container.Single<ISoundService>();
             _slider.onValueChanged.AddListener (delegate {SetVolumeForSounds();});
             if (_synchronizeWithSoundManager)
             {

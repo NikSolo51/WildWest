@@ -1,6 +1,6 @@
-﻿using CodeBase.Infrastructure.Services;
-using CodeBase.Infrastructure.States;
+﻿using CodeBase.Infrastructure.States;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Logic
 {
@@ -10,10 +10,11 @@ namespace CodeBase.Logic
         public string TransferTo;
         private IGameStateMachine _stateMachine;
         private bool _triggered;
-
-        private void Awake()
+        
+        [Inject]
+        public void Construct(IGameStateMachine stateMachine)
         {
-            _stateMachine = AllServices.Container.Single<IGameStateMachine>();
+            _stateMachine = stateMachine;
         }
 
         private void OnTriggerEnter(Collider other)

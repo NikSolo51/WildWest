@@ -1,8 +1,6 @@
-﻿using CodeBase.Infrastructure.Services;
-
-namespace CodeBase.Services.Hud
+﻿namespace CodeBase.Services.Hud
 {
-    public interface IHudService : IService
+    public interface IHudService 
     {
         void ChangeState(HudState hudState);
 

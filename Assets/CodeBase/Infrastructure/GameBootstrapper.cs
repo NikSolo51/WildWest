@@ -1,6 +1,7 @@
 using CodeBase.Infrastructure.States;
 using CodeBase.Logic;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Infrastructure
 {
@@ -8,10 +9,20 @@ namespace CodeBase.Infrastructure
     {
         public LoadingCurtain CurtainPrefab;
         private Game _game;
+        private GameStateMachine _gameStateMachine;
+        private DiContainer _diContainer;
 
-        private void Awake()
+        public void Construct(GameStateMachine gameStateMachine,DiContainer diContainer)
         {
-            _game = new Game(this, Instantiate(CurtainPrefab));
+            _gameStateMachine = gameStateMachine;
+            _diContainer = diContainer;
+            Initialize();
+        }
+
+        private void Initialize()
+        {
+            _game = new Game(_gameStateMachine);
+            _game.Construct(this, Instantiate(CurtainPrefab),_diContainer);
             _game.StateMachine.Enter<BootstrapState>();
             DontDestroyOnLoad(this);
         }

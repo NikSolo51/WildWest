@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace CodeBase.Services.Update
 {
-    [DisallowMultipleComponent]
     public class UpdateManager : IUpdateService
     {
         public event Action OnUpdate;

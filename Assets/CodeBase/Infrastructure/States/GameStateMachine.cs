@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using CodeBase.Infrastructure.Factory;
-using CodeBase.Infrastructure.Services;
 using CodeBase.Logic;
 using CodeBase.Services.PersistentProgress;
 using CodeBase.Services.SaveLoad;
-using CodeBase.Services.StaticData;
-using CodeBase.UI.UIInventory.Interfaces;
+using Zenject;
 
 namespace CodeBase.Infrastructure.States
 {
@@ -15,19 +13,24 @@ namespace CodeBase.Infrastructure.States
         private Dictionary<Type, IExitableState> _states;
         private IExitableState _activesState;
 
-        public GameStateMachine(SceneLoader sceneLoader, LoadingCurtain curtain, AllServices services)
+        public void Construct(SceneLoader sceneLoader,DiContainer container,LoadingCurtain curtain)
         {
             _states = new Dictionary<Type, IExitableState>()
             {
-                [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader, services),
-                [typeof(LoadLevelState)] = new LoadLevelState(this, sceneLoader, curtain,
-                    services.Single<IGameFactory>(),
-                    services.Single<IStaticDataService>(),
-                    services.Single<IUIItemInventory>(),
-                    AllServices.Container.Single<ISaveLoadService>()),
-                [typeof(LoadProgressState)] = new LoadProgressState(this, services.Single<IPersistentProgressService>(),
-                    services.Single<ISaveLoadService>()),
-                [typeof(GameLoopState)] = new GameLoopState(this),
+                [typeof(BootstrapState)] = new BootstrapState(this, sceneLoader),
+                [typeof(LoadLevelState)] = new LoadLevelState(
+                    container.Resolve<GameStateMachine>(),
+                    sceneLoader,
+                    curtain,
+                    container.Resolve<IGameFactory>(),
+                    container.Resolve<ISaveLoadService>()
+                    ),
+                [typeof(LoadProgressState)] = new LoadProgressState(
+                    container.Resolve<GameStateMachine>(),
+                    container.Resolve<IPersistentProgressService>(),
+                    container.Resolve<ISaveLoadService>()
+                    ),
+                [typeof(GameLoopState)] = new GameLoopState(),
             };
         }
 

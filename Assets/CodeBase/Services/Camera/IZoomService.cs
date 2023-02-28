@@ -1,8 +1,6 @@
-﻿using CodeBase.Infrastructure.Services;
-
-namespace CodeBase.Services.Camera
+﻿namespace CodeBase.Services.Camera
 {
-    public interface IZoomService : IService
+    public interface IZoomService 
     {
         void Zoom(float zoomSpeed,bool inverseScroll,float zoomMinBound,float zoomMaxBound);
     }

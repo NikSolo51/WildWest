@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 
 namespace CodeBase.Logic.CameraRaycast
 {
+    [RequireComponent(typeof(Camera))]
     public class CameraRayCast : MonoBehaviour, ICameraRaycast
     {
         public LayerMask _layermask;
@@ -11,6 +12,16 @@ namespace CodeBase.Logic.CameraRaycast
         private Vector3 _lastHitPointPos;
         private bool _enableRaycast = true;
         private Transform _heroTransform;
+
+        private void Start()
+        {
+            _camera = GetComponent<Camera>();
+        }
+
+        public void SetupPlayer(Transform heroTransform)
+        {
+            _heroTransform = heroTransform;
+        }
 
         public Vector3 GetLastHitPoint()
         {
@@ -28,7 +39,7 @@ namespace CodeBase.Logic.CameraRaycast
 
             return null;
         }
-        
+
         public Vector3 GetPoint()
         {
             if (!_enableRaycast)
@@ -47,12 +58,6 @@ namespace CodeBase.Logic.CameraRaycast
             }
 
             return _lastHitPointPos;
-        }
-
-        public void Construct(Camera camera,Transform heroTransform)
-        {
-            _camera = camera;
-            _heroTransform = heroTransform;
         }
 
         public void EnableRayCast()

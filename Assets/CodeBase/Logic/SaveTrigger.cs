@@ -1,17 +1,18 @@
-﻿using CodeBase.Infrastructure.Services;
-using CodeBase.Services.SaveLoad;
+﻿using CodeBase.Services.SaveLoad;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Logic
 {
     public class SaveTrigger : MonoBehaviour
     {
-        private ISaveLoadService _saveLoadService;
         public BoxCollider Collider;
-
-        private void Awake()
+        private ISaveLoadService _saveLoadService;
+        
+        [Inject]
+        public void Construct(ISaveLoadService saveLoadService)
         {
-            _saveLoadService = AllServices.Container.Single<ISaveLoadService>();
+            _saveLoadService = saveLoadService;
         }
 
         private void OnTriggerEnter(Collider other)

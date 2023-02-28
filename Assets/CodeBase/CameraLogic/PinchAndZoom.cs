@@ -1,7 +1,7 @@
-using CodeBase.Infrastructure.Services;
 using CodeBase.Services.Camera;
 using CodeBase.Services.Update;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.CameraLogic
 {
@@ -18,19 +18,14 @@ namespace CodeBase.CameraLogic
 
         private IUpdateService _updateService;
         private IZoomService _zoomService;
-
+        
+        [Inject]
         public void Construct(IUpdateService updateService, IZoomService zoomService)
         {
             _updateService = updateService;
             _zoomService = zoomService;
-        }
-
-        private void OnEnable()
-        {
-            _updateService = AllServices.Container.Single<IUpdateService>();
             _updateService.Register(this);
         }
-
         private void OnDisable()
         {
             _updateService.Unregister(this);

@@ -1,10 +1,10 @@
 ﻿using System;
-using CodeBase.Infrastructure.Services;
 using CodeBase.Services.Hud;
 using CodeBase.Services.Input;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
+using Zenject;
 
 namespace CodeBase.UI.UIInventory
 {
@@ -16,12 +16,14 @@ namespace CodeBase.UI.UIInventory
         
         [SerializeField] private UnityEvent OnCloseObjectUnityEvent;
         public event Action OnCloseObject;
-
-        private void Start()
+        
+        [Inject]
+        public void Construct(IInputService inputService, IHudService hudService)
         {
-            _inputService = AllServices.Container.Single<IInputService>();
-            _hudService = AllServices.Container.Single<IHudService>();
+            _inputService = inputService;
+            _hudService = hudService;
         }
+        
 
         private void Update()
         {

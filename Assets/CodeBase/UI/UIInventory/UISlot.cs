@@ -1,5 +1,4 @@
 ﻿using CodeBase.Infrastructure.Factory;
-using CodeBase.Infrastructure.Services;
 using CodeBase.Inventory;
 using CodeBase.Logic;
 using CodeBase.Services.Hud;
@@ -8,6 +7,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Zenject;
 
 namespace CodeBase.UI.UIInventory
 {
@@ -29,13 +29,18 @@ namespace CodeBase.UI.UIInventory
         private IUIItemInventory _iUiItemInventory;
         public UnityEvent OnShowItem;
 
+        [Inject]
+        public void Construct(IHudService hudService, IGameFactory gameFactory, IUIItemInventory iUiItemInventory)
+        {
+            _hudService = hudService;
+            _gameFactory = gameFactory;
+            _iUiItemInventory = iUiItemInventory;
+            _iUiItemInventory.RegisterNewSlot(this);
+        }
+
         private void Start()
         {
-            _iUiItemInventory = AllServices.Container.Single<IUIItemInventory>();
-            _gameFactory = AllServices.Container.Single<IGameFactory>();
-            _hudService = AllServices.Container.Single<IHudService>();
             _startSprite = _image.sprite;
-            _iUiItemInventory.RegisterNewSlot(this);
             _doubleClick.OnDoubleClick += ShowItem;
         }
 

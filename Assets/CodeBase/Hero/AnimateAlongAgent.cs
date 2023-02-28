@@ -1,6 +1,7 @@
 ﻿using CodeBase.Services.Update;
 using UnityEngine;
 using UnityEngine.AI;
+using Zenject;
 
 namespace CodeBase.Hero
 {
@@ -13,7 +14,8 @@ namespace CodeBase.Hero
         [SerializeField] private NavMeshAgent Agent;
         [SerializeField] private HeroAnimator Animator;
         private IUpdateService _updateService;
-
+        
+        [Inject]
         public void Constructor(IUpdateService updateService)
         {
             _updateService = updateService;

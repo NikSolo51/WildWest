@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using CodeBase.Infrastructure.Services;
 using CodeBase.Services.Update;
 using UnityEngine;
+using Zenject;
 
 namespace CodeBase.Logic
 {
@@ -10,10 +10,11 @@ namespace CodeBase.Logic
         [SerializeField] private List<GameObject> _objects;
         [SerializeField,Range(-1,1)] private float _speed;
         private IUpdateService _updateService;
-
-        private void OnEnable()
+        
+        [Inject]
+        public void Construct(IUpdateService updateService)
         {
-            _updateService = AllServices.Container.Single<IUpdateService>();
+            _updateService = updateService;
             _updateService.Register(this);
         }
 

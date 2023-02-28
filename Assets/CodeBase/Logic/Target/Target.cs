@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections;
 using CodeBase.Data;
-using CodeBase.Infrastructure.Services;
 using CodeBase.Services.SaveLoad;
 using UnityEngine;
 using UnityEngine.Events;
+using Zenject;
 
 namespace CodeBase.Logic.Target
 {
@@ -20,12 +20,17 @@ namespace CodeBase.Logic.Target
         private bool deactivated;
         private string _id;
         private ISaveLoadService _saveLoadService;
+    
+        [Inject]
+        public void Construct(ISaveLoadService saveLoadService)
+        {
+            _saveLoadService = saveLoadService;
+            _saveLoadService.Register(this);
+        }
 
         private void Start()
         {
             _id = GetComponent<UniqueId>().Id;
-            _saveLoadService = AllServices.Container.Single<ISaveLoadService>();
-            _saveLoadService.Register(this);
         }
 
         public void TargetReached()
